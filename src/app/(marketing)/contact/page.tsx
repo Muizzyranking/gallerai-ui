@@ -8,7 +8,7 @@ export default function ContactPage() {
     <>
       <PageHero
         kicker="Contact"
-        title="Talk to a human about your event"
+        title="Talk to us about your event"
         lede="Planning a wedding, festival, conference or a season of events? Tell us the date and guest count and we will recommend the right setup."
       />
       <section style={{ background: "var(--paper)" }}>
