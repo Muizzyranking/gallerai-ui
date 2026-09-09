@@ -1,19 +1,19 @@
 const BASE = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000";
 
-interface ApiEnvelope<T> {
+export interface Envelope<T> {
   message: string;
-  data: T;
+  data: T | null;
+  errors?: FieldIssue[] | null;
+  meta?: unknown;
 }
 
-/**
- * "link"          → public — anyone with the URL can access
- * "code"          → requires an access code
- * "approved_list" → requires an email invite
- * "combined"      → requires both code AND invite
- *
- * Rule: access_mode === "link" means public. Everything else is private.
- */
-export type AccessMode = "link" | "code" | "approved_list" | "combined";
+export interface FieldIssue {
+  field: string;
+  message: string;
+  type?: string;
+}
+
+export type AccessMode = "link" | "code" | "approved_list" | "combined" | "private";
 export type EventStatus = "active" | "inactive" | "archived";
 
 export function isPrivateMode(mode: AccessMode): boolean {
@@ -30,6 +30,10 @@ export function accessModeLabel(mode: AccessMode): string {
       return "Invite only";
     case "combined":
       return "Code + invite";
+    case "private":
+      return "Private";
+    default:
+      return "Public";
   }
 }
 
@@ -37,13 +41,14 @@ export interface User {
   id: string;
   email: string;
   display_name: string;
-  face_updated_at: string | null;
+  is_email_confirmed: boolean;
+  pending_email: string | null;
+  auth_provider: string | null;
+  is_admin: boolean;
+  is_active: boolean;
+  face_updated_at?: string | null;
   created_at: string;
-}
-
-export interface AuthTokenData {
-  access_token: string;
-  token_type: string;
+  updated_at: string;
 }
 
 export interface EventSettings {
@@ -102,6 +107,7 @@ export interface UpdateEventPayload {
   event_date?: string;
   is_private?: boolean;
   status?: EventStatus;
+  access_config?: AccessConfig;
   settings?: Partial<EventSettings>;
 }
 
@@ -147,84 +153,120 @@ export interface GalleryResponse {
   photos: GalleryPhoto[];
 }
 
-/* ══════════════════════════════════════════════════════════════
-   TOKEN ACCESSOR
-══════════════════════════════════════════════════════════════ */
-let _getToken: (() => string | null) | null = null;
-export function registerTokenAccessor(fn: () => string | null) {
-  _getToken = fn;
-}
-
-/* ══════════════════════════════════════════════════════════════
-   ERROR
-══════════════════════════════════════════════════════════════ */
 export class ApiError extends Error {
-  constructor(
-    public status: number,
-    public message: string,
-    public detail?: unknown,
-  ) {
+  public status: number;
+  public fieldErrors: Record<string, string>;
+  public issues: FieldIssue[];
+
+  constructor(status: number, message: string, issues?: FieldIssue[] | null) {
     super(message);
     this.name = "ApiError";
+    this.status = status;
+    this.issues = issues ?? [];
+    this.fieldErrors = {};
+    for (const issue of this.issues) {
+      const field = (issue.field ?? "").replace(/^(body|query|path)\./, "");
+      if (field && !(field in this.fieldErrors)) this.fieldErrors[field] = issue.message;
+    }
+  }
+
+  get hasFieldErrors(): boolean {
+    return Object.keys(this.fieldErrors).length > 0;
   }
 }
 
-/* ══════════════════════════════════════════════════════════════
-   CORE FETCH — unwraps { message, data } envelope
-══════════════════════════════════════════════════════════════ */
-async function request<T>(method: string, path: string, body?: unknown, options?: { formData?: FormData; public?: boolean }): Promise<T> {
-  const token = _getToken?.();
-  const headers: Record<string, string> = {};
-  if (token && !options?.public) headers["Authorization"] = `Bearer ${token}`;
-  if (body && !options?.formData) headers["Content-Type"] = "application/json";
-
-  const res = await fetch(`${BASE}${path}`, {
+async function request<T>(method: string, path: string, body?: unknown, options?: { formData?: FormData }): Promise<T> {
+  const isForm = !!options?.formData;
+  const res = await fetch(`/api/proxy${path}`, {
     method,
-    headers,
-    body: options?.formData ? options.formData : body ? JSON.stringify(body) : undefined,
+    credentials: "include",
+    headers: isForm ? {} : { "Content-Type": "application/json" },
+    body: isForm ? options?.formData : body !== undefined ? JSON.stringify(body) : undefined,
   });
 
   if (res.status === 204) return undefined as T;
 
-  const json = await res.json().catch(() => null);
+  const json = (await res.json().catch(() => null)) as Envelope<T> | null;
 
   if (!res.ok) {
-    throw new ApiError(res.status, json?.detail ?? json?.message ?? res.statusText, json);
+    throw new ApiError(res.status, json?.message ?? res.statusText, json?.errors);
   }
 
-  // Unwrap envelope
   if (json && typeof json === "object" && "data" in json) {
-    return (json as ApiEnvelope<T>).data;
+    return (json as Envelope<T>).data as T;
   }
 
   return json as T;
 }
 
-const get = <T>(p: string, pub = false) => request<T>("GET", p, undefined, { public: pub });
+async function requestAuth<T>(method: string, path: string, body?: unknown): Promise<Envelope<T>> {
+  const res = await fetch(path, {
+    method,
+    credentials: "include",
+    headers: { "Content-Type": "application/json" },
+    body: body !== undefined ? JSON.stringify(body) : undefined,
+  });
+
+  const json = (await res.json().catch(() => null)) as Envelope<T> | null;
+
+  if (!res.ok) {
+    throw new ApiError(res.status, json?.message ?? res.statusText, json?.errors);
+  }
+
+  return { message: json?.message ?? "Request processed successfully", data: (json?.data ?? null) as T | null };
+}
+
+const get = <T>(p: string) => request<T>("GET", p);
 const post = <T>(p: string, b?: unknown) => request<T>("POST", p, b);
 const patch = <T>(p: string, b?: unknown) => request<T>("PATCH", p, b);
 const del = <T>(p: string) => request<T>("DELETE", p);
 const postForm = <T>(p: string, fd: FormData) => request<T>("POST", p, undefined, { formData: fd });
 
-/* ══════════════════════════════════════════════════════════════
-   AUTH
-══════════════════════════════════════════════════════════════ */
+export interface LoginResult {
+  message: string;
+  user: User | null;
+}
+
+export interface RegisterResult {
+  message: string;
+}
+
 export const auth = {
-  register: (p: { display_name: string; email: string; password: string }) => post<AuthTokenData>("/api/v1/auth/register", p),
+  register: async (p: { display_name: string; email: string; password: string }): Promise<RegisterResult> => {
+    const env = await requestAuth<null>("POST", "/api/auth/register", p);
+    return { message: env.message };
+  },
 
-  login: (p: { email: string; password: string }) => post<AuthTokenData>("/api/v1/auth/login", p),
+  registerConfirm: (p: { token: string }) => post<{ message?: string } | null>("/api/v1/auth/register/confirm", p),
 
-  me: () => get<User>("/api/v1/auth/me"),
+  resendEmailVerification: (p: { email: string }) => post<{ message?: string } | null>("/api/v1/auth/resend-email-verification", p),
+
+  login: async (p: { email: string; password: string }): Promise<LoginResult> => {
+    const env = await requestAuth<User>("POST", "/api/auth/login", p);
+    return { message: env.message, user: env.data };
+  },
+
+  forgotPassword: (p: { email: string }) => post<{ message?: string } | null>("/api/v1/auth/forgot-password", p),
+
+  resetPassword: (p: { token: string; new_password: string }) => post<{ message?: string } | null>("/api/v1/auth/reset-password", p),
+
+  me: async (): Promise<User> => {
+    const env = await requestAuth<User>("GET", "/api/auth/me");
+    if (!env.data) throw new ApiError(401, env.message || "Not signed in");
+    return env.data;
+  },
+
+  logout: async (): Promise<void> => {
+    await requestAuth<null>("POST", "/api/auth/logout");
+  },
 };
 
 /* ══════════════════════════════════════════════════════════════
    EVENTS
 ══════════════════════════════════════════════════════════════ */
 export const events = {
-  /** Events the current user manages (organiser/owner) */
   list: () => get<Event[]>("/api/v1/events"),
 
-  /** Events the current user is attending (member) */
   attending: () => get<Event[]>("/api/v1/events/attending"),
 
   create: (p: CreateEventPayload) => post<Event>("/api/v1/events", p),
@@ -307,12 +349,12 @@ export const faces = {
    GALLERY
 ══════════════════════════════════════════════════════════════ */
 export const gallery = {
-  full: (eventId: string) => get<GalleryResponse>(`/api/v1/events/${eventId}/gallery`, true),
+  full: (eventId: string) => get<GalleryResponse>(`/api/v1/events/${eventId}/gallery`),
 
   me: (eventId: string) => get<GalleryResponse>(`/api/v1/events/${eventId}/gallery/me`),
 
   anonymous: (eventId: string, scan_token: string) =>
-    get<GalleryResponse>(`/api/v1/events/${eventId}/gallery/anonymous?scan_token=${encodeURIComponent(scan_token)}`, true),
+    get<GalleryResponse>(`/api/v1/events/${eventId}/gallery/anonymous?scan_token=${encodeURIComponent(scan_token)}`),
 
   flag: (eventId: string, photoId: string) => post<void>(`/api/v1/events/${eventId}/gallery/${photoId}/flag`),
 
@@ -332,5 +374,5 @@ export const downloads = {
    HEALTH
 ══════════════════════════════════════════════════════════════ */
 export const health = {
-  check: () => get<{ status: string }>("/health", true),
+  check: () => get<{ status: string }>("/health"),
 };
