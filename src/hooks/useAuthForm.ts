@@ -28,5 +28,16 @@ export function useAuthForm<T extends Record<string, string>>(
     return errors;
   };
 
-  return { form, setForm, fieldErrors, apiError, setApiError, loading, setLoading, update, validateAll };
+  const applyServerErrors = (serverErrors: FieldErrors) => {
+    setSubmitted(true);
+    setFieldErrors((prev) => {
+      const next = { ...prev };
+      for (const [key, message] of Object.entries(serverErrors)) {
+        if (message && !next[key]) next[key] = message;
+      }
+      return next;
+    });
+  };
+
+  return { form, setForm, fieldErrors, apiError, setApiError, loading, setLoading, update, validateAll, applyServerErrors };
 }
