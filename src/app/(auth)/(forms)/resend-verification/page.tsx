@@ -14,7 +14,7 @@ function ResendInner() {
   const searchParams = useSearchParams();
   const [sent, setSent] = useState(false);
   const [apiError, setApiError] = useState("");
-  const { form, fieldErrors, loading, setLoading, update, validateAll } = useAuthForm(
+  const { form, fieldErrors, loading, setLoading, update, validateAll, applyServerErrors } = useAuthForm(
     resendVerificationSchema,
     { email: searchParams.get("email") ?? "" },
     (v) => ({ email: v.email.trim().toLowerCase() }),
@@ -30,7 +30,11 @@ function ResendInner() {
       await auth.resendEmailVerification({ email: form.email.trim().toLowerCase() });
       setSent(true);
     } catch (err) {
-      setApiError(err instanceof ApiError ? err.message : "Something went wrong. Please try again.");
+      if (err instanceof ApiError && err.hasFieldErrors) {
+        applyServerErrors(err.fieldErrors);
+      } else {
+        setApiError(err instanceof ApiError ? err.message : "Something went wrong. Please try again.");
+      }
     } finally {
       setLoading(false);
     }

@@ -16,7 +16,7 @@ function LoginInner() {
   const searchParams = useSearchParams();
   const { login } = useAuth();
 
-  const { form, fieldErrors, apiError, setApiError, loading, setLoading, update, validateAll } = useAuthForm(
+  const { form, fieldErrors, apiError, setApiError, loading, setLoading, update, validateAll, applyServerErrors } = useAuthForm(
     loginSchema,
     { email: "", password: "" },
     (v) => ({ email: v.email.trim().toLowerCase(), password: v.password }),
@@ -31,9 +31,13 @@ function LoginInner() {
       await login(form.email.trim().toLowerCase(), form.password);
       router.push(searchParams.get("next") ?? "/dashboard");
     } catch (err) {
-      setApiError(
-        err instanceof ApiError ? (err.status === 401 ? "Incorrect email or password." : err.message) : "Something went wrong. Please try again.",
-      );
+      if (err instanceof ApiError && err.hasFieldErrors) {
+        applyServerErrors(err.fieldErrors);
+      } else {
+        setApiError(
+          err instanceof ApiError ? (err.status === 401 ? "Incorrect email or password." : err.message) : "Something went wrong. Please try again.",
+        );
+      }
     } finally {
       setLoading(false);
     }

@@ -35,13 +35,9 @@ function ResetPasswordInner() {
 
   useEffect(() => {
     if (!initialToken) return;
-    // Scrub the token from the address bar immediately. replaceState also
-    // rewrites the current history entry so it never lands in history,
-    // whether verification later passes or not.
     window.history.replaceState(window.history.state ?? null, "", "/reset-password");
   }, [initialToken]);
 
-  const rulesOk = RULES.every((r) => r.test(password));
   const matchOk = password.length > 0 && password === confirm;
   const canSubmit = !loading;
 
@@ -72,13 +68,22 @@ function ResetPasswordInner() {
       await auth.resetPassword({ token: initialToken, new_password: password });
       setView("success");
     } catch (err) {
-      setApiError(
-        err instanceof ApiError && err.status === 410
-          ? "This reset link has expired. Please request a new one."
-          : err instanceof ApiError
-            ? err.message
-            : "Something went wrong. Please try again.",
-      );
+      if (err instanceof ApiError && err.hasFieldErrors) {
+        // Backend names the field `new_password` — fold it into the form's password slot.
+        const mapped: FieldErrors = {};
+        for (const [field, message] of Object.entries(err.fieldErrors)) {
+          mapped[field === "new_password" ? "password" : field] = message;
+        }
+        setFieldErrors((prev) => ({ ...prev, ...mapped }));
+      } else {
+        setApiError(
+          err instanceof ApiError && err.status === 410
+            ? "This reset link has expired. Please request a new one."
+            : err instanceof ApiError
+              ? err.message
+              : "Something went wrong. Please try again.",
+        );
+      }
     } finally {
       setLoading(false);
     }

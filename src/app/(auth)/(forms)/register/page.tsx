@@ -14,7 +14,7 @@ export default function RegisterPage() {
   const router = useRouter();
   const { register } = useAuth();
 
-  const { form, fieldErrors, apiError, setApiError, loading, setLoading, update, validateAll } = useAuthForm(
+  const { form, fieldErrors, apiError, setApiError, loading, setLoading, update, validateAll, applyServerErrors } = useAuthForm(
     registerSchema,
     { display_name: "", email: "", password: "" },
     (v) => ({ display_name: v.display_name.trim(), email: v.email.trim().toLowerCase(), password: v.password }),
@@ -27,9 +27,13 @@ export default function RegisterPage() {
     setLoading(true);
     try {
       await register(form.display_name.trim(), form.email.trim().toLowerCase(), form.password);
-      router.push("/dashboard");
+      router.push(`/check-email?email=${encodeURIComponent(form.email.trim().toLowerCase())}`);
     } catch (err) {
-      setApiError(err instanceof ApiError ? err.message : "Something went wrong.");
+      if (err instanceof ApiError && err.hasFieldErrors) {
+        applyServerErrors(err.fieldErrors);
+      } else {
+        setApiError(err instanceof ApiError ? err.message : "Something went wrong.");
+      }
     } finally {
       setLoading(false);
     }

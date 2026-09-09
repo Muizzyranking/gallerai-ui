@@ -6,8 +6,8 @@ import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useRef, useState } from "react";
 import Brand from "@/components/layout/Brand";
+import { useAuth } from "@/hooks/useAuth";
 import { ApiError, auth } from "@/lib/api";
-import { useAuthStore } from "@/store/authStore";
 
 type Status = "verifying" | "success" | "error" | "missing-token";
 
@@ -16,9 +16,8 @@ const REDIRECT_DELAY_MS = 2800;
 function ConfirmEmailInner() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const isAuthed = useAuthStore((s) => !!s.token && !!s.user);
+  const { isAuthed } = useAuth();
 
-  // Capture the token once on first render...
   const initialToken = useRef(searchParams.get("token")).current;
 
   const [status, setStatus] = useState<Status>(initialToken ? "verifying" : "missing-token");
@@ -27,8 +26,6 @@ function ConfirmEmailInner() {
 
   useEffect(() => {
     if (!initialToken) return;
-    // ...then scrub it from the address bar immediately. replaceState also
-    // rewrites the current history entry, so the token never lands in history.
     window.history.replaceState(window.history.state ?? null, "", "/confirm-email");
   }, [initialToken]);
 
@@ -51,8 +48,6 @@ function ConfirmEmailInner() {
       });
   }, [initialToken]);
 
-  // Success redirect: signed-in users continue to the dashboard,
-  // everyone else goes to login (no auto-login).
   useEffect(() => {
     if (status !== "success") return;
     const target = isAuthed ? "/dashboard" : "/login";
