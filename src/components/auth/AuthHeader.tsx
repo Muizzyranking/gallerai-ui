@@ -10,7 +10,9 @@ export default function AuthHeader({
   size?: "lg" | "md";
 }) {
   const sizes =
-    size === "lg" ? { fontSize: "2.4rem", lineHeight: 1.05, marginBottom: 32 } : { fontSize: "2.2rem", lineHeight: 1.08, marginBottom: 30 };
+    size === "lg"
+      ? { fontSize: "2.4rem", lineHeight: 1.05, marginBottom: 32 }
+      : { fontSize: "2.2rem", lineHeight: 1.08, marginBottom: 30 };
 
   return (
     <div style={{ marginBottom: sizes.marginBottom }}>

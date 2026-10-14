@@ -1,6 +1,14 @@
 import BackToSignIn from "../ui/back_to_sign_in";
 
-export default function EmailSentNotice({ title, message, variant }: { title: string; message: React.ReactNode; variant: "card" | "standalone" }) {
+export default function EmailSentNotice({
+  title,
+  message,
+  variant,
+}: {
+  title: string;
+  message: React.ReactNode;
+  variant: "card" | "standalone";
+}) {
   const icon = (
     <span
       aria-hidden="true"
@@ -35,7 +43,17 @@ export default function EmailSentNotice({ title, message, variant }: { title: st
   return (
     <div style={{ textAlign: "center" }}>
       {icon}
-      <h1 style={{ fontFamily: "var(--font-display)", fontSize: "2rem", fontWeight: 800, letterSpacing: "-0.02em", marginBottom: 12 }}>{title}</h1>
+      <h1
+        style={{
+          fontFamily: "var(--font-display)",
+          fontSize: "2rem",
+          fontWeight: 800,
+          letterSpacing: "-0.02em",
+          marginBottom: 12,
+        }}
+      >
+        {title}
+      </h1>
       <p className="body-text" style={{ marginBottom: 26 }}>
         {message}
       </p>

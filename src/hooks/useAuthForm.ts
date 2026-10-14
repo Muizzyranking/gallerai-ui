@@ -39,5 +39,16 @@ export function useAuthForm<T extends Record<string, string>>(
     });
   };
 
-  return { form, setForm, fieldErrors, apiError, setApiError, loading, setLoading, update, validateAll, applyServerErrors };
+  return {
+    form,
+    setForm,
+    fieldErrors,
+    apiError,
+    setApiError,
+    loading,
+    setLoading,
+    update,
+    validateAll,
+    applyServerErrors,
+  };
 }

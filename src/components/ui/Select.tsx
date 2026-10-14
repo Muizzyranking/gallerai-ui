@@ -81,7 +81,9 @@ export default function Select({ id, label, value, options, onChange, placeholde
           color: selected ? "var(--ink)" : "var(--ink-3)",
         }}
       >
-        <span style={{ overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{selected ? selected.label : placeholder}</span>
+        <span style={{ overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+          {selected ? selected.label : placeholder}
+        </span>
         <svg
           width="16"
           height="16"
@@ -92,7 +94,12 @@ export default function Select({ id, label, value, options, onChange, placeholde
           strokeLinecap="round"
           strokeLinejoin="round"
           aria-hidden="true"
-          style={{ flexShrink: 0, transform: open ? "rotate(180deg)" : "none", transition: "transform 0.2s ease", color: "var(--ink-3)" }}
+          style={{
+            flexShrink: 0,
+            transform: open ? "rotate(180deg)" : "none",
+            transition: "transform 0.2s ease",
+            color: "var(--ink-3)",
+          }}
         >
           <path d="m4 6 4 4 4-4" />
         </svg>

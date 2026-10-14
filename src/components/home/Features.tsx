@@ -94,8 +94,24 @@ const TONES = [
     chip: "var(--accent-deep)",
     index: "var(--accent-deep)",
   },
-  { bg: "#fff", border: "var(--line)", title: "var(--ink)", body: "var(--ink-2)", chipBg: "var(--cream)", chip: "var(--ink)", index: "var(--ink-3)" },
-  { bg: "var(--marigold-soft)", border: "#ecd9a8", title: "var(--ink)", body: "#6b5420", chipBg: "#fff", chip: "#8a6100", index: "#8a6100" },
+  {
+    bg: "#fff",
+    border: "var(--line)",
+    title: "var(--ink)",
+    body: "var(--ink-2)",
+    chipBg: "var(--cream)",
+    chip: "var(--ink)",
+    index: "var(--ink-3)",
+  },
+  {
+    bg: "var(--marigold-soft)",
+    border: "#ecd9a8",
+    title: "var(--ink)",
+    body: "#6b5420",
+    chipBg: "#fff",
+    chip: "#8a6100",
+    index: "#8a6100",
+  },
 ];
 
 export default function Features() {
@@ -110,7 +126,8 @@ export default function Features() {
             {features.heading}
           </h2>
           <p className="body-text" style={{ maxWidth: 600, marginBottom: 40 }}>
-            Built around the guest experience: every photo in one place, and a one-selfie shortcut to the ones that matter to each person.
+            Built around the guest experience: every photo in one place, and a one-selfie shortcut to the ones that
+            matter to each person.
           </p>
         </Fade>
 
@@ -156,7 +173,13 @@ export default function Features() {
                       {ICONS[i % ICONS.length]}
                     </span>
                     <span
-                      style={{ fontFamily: "var(--font-mono)", fontSize: "0.78rem", fontWeight: 600, letterSpacing: "0.14em", color: tone.index }}
+                      style={{
+                        fontFamily: "var(--font-mono)",
+                        fontSize: "0.78rem",
+                        fontWeight: 600,
+                        letterSpacing: "0.14em",
+                        color: tone.index,
+                      }}
                     >
                       0{i + 1}
                     </span>
@@ -173,7 +196,9 @@ export default function Features() {
                   >
                     {f.title}
                   </h3>
-                  <p style={{ fontSize: "1rem", lineHeight: 1.65, color: tone.body, maxWidth: wide ? "46ch" : "36ch" }}>{f.body}</p>
+                  <p style={{ fontSize: "1rem", lineHeight: 1.65, color: tone.body, maxWidth: wide ? "46ch" : "36ch" }}>
+                    {f.body}
+                  </p>
                 </article>
               </Fade>
             );

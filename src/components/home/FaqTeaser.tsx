@@ -55,7 +55,12 @@ export default function FaqTeaser() {
     <section style={{ background: "var(--paper)" }}>
       <div
         className="wrap section-pad"
-        style={{ display: "grid", gridTemplateColumns: "0.9fr 1.1fr", gap: "clamp(32px,5vw,64px)", alignItems: "start" }}
+        style={{
+          display: "grid",
+          gridTemplateColumns: "0.9fr 1.1fr",
+          gap: "clamp(32px,5vw,64px)",
+          alignItems: "start",
+        }}
         id="faq-grid"
       >
         <Fade>
@@ -66,7 +71,8 @@ export default function FaqTeaser() {
             {faqTeaser.heading}
           </h2>
           <p className="body-text" style={{ marginBottom: 24 }}>
-            Straight answers for organisers, photographers and guests. The full list covers uploads, downloads, retention and face data.
+            Straight answers for organisers, photographers and guests. The full list covers uploads, downloads,
+            retention and face data.
           </p>
           <Link href="/faq" className="btn-secondary">
             Read all FAQs

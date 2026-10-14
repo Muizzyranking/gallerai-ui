@@ -14,11 +14,7 @@ interface BrandProps {
   dark?: boolean;
 }
 
-export default function Brand({
-  size = "md",
-  link = true,
-  dark = false,
-}: BrandProps) {
+export default function Brand({ size = "md", link = true, dark = false }: BrandProps) {
   const cfg = SIZES[size];
 
   const content = (

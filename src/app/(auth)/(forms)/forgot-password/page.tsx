@@ -52,7 +52,8 @@ export default function ForgotPasswordPage() {
           title="Check your inbox"
           message={
             <>
-              If an account exists for <strong style={{ color: "var(--ink)" }}>{form.email.trim().toLowerCase()}</strong>, we sent a link to
+              If an account exists for{" "}
+              <strong style={{ color: "var(--ink)" }}>{form.email.trim().toLowerCase()}</strong>, we sent a link to
               reset your password.
             </>
           }

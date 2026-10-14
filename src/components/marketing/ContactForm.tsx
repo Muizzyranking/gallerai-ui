@@ -7,15 +7,31 @@ import { site } from "@/content/site";
 
 const contactSchema = z.object({
   name: z.string().trim().min(2, "Tell us your name (2+ characters).").max(80, "Keep it under 80 characters."),
-  email: z.string().trim().min(1, "Enter your email address.").email("Enter a valid email address.").max(254, "That email looks too long."),
+  email: z
+    .string()
+    .trim()
+    .min(1, "Enter your email address.")
+    .email("Enter a valid email address.")
+    .max(254, "That email looks too long."),
   topic: z.string().min(1, "Pick a topic."),
-  message: z.string().trim().min(20, "Give us a little more detail (20+ characters).").max(2000, "Keep it under 2000 characters."),
+  message: z
+    .string()
+    .trim()
+    .min(20, "Give us a little more detail (20+ characters).")
+    .max(2000, "Keep it under 2000 characters."),
 });
 
 type ContactValues = z.infer<typeof contactSchema>;
 type ContactErrors = Partial<Record<keyof ContactValues, string>>;
 
-const TOPICS = ["Planning an event", "Photographer workflow", "Venues & seasons", "Support", "Privacy & data", "Something else"];
+const TOPICS = [
+  "Planning an event",
+  "Photographer workflow",
+  "Venues & seasons",
+  "Support",
+  "Privacy & data",
+  "Something else",
+];
 
 /* No backend yet: submit opens the visitor's mail app with a prefilled
    message to the editable contact address, then shows confirmation. */
@@ -75,10 +91,12 @@ export default function ContactForm() {
         >
           ✓
         </span>
-        <h2 style={{ fontFamily: "var(--font-display)", fontSize: "1.5rem", fontWeight: 800, marginBottom: 10 }}>Message ready in your mail app</h2>
+        <h2 style={{ fontFamily: "var(--font-display)", fontSize: "1.5rem", fontWeight: 800, marginBottom: 10 }}>
+          Message ready in your mail app
+        </h2>
         <p className="body-text" style={{ marginBottom: 6 }}>
-          Your mail app should have opened with everything prefilled to <strong style={{ color: "var(--ink)" }}>{site.contactEmail}</strong>. Just hit
-          send.
+          Your mail app should have opened with everything prefilled to{" "}
+          <strong style={{ color: "var(--ink)" }}>{site.contactEmail}</strong>. Just hit send.
         </p>
         <p className="small-text">Nothing opened? Write to us directly at {site.contactEmail}.</p>
       </div>
@@ -91,7 +109,12 @@ export default function ContactForm() {
   });
 
   return (
-    <form onSubmit={onSubmit} noValidate className="card" style={{ padding: "32px 30px", display: "flex", flexDirection: "column", gap: 18 }}>
+    <form
+      onSubmit={onSubmit}
+      noValidate
+      className="card"
+      style={{ padding: "32px 30px", display: "flex", flexDirection: "column", gap: 18 }}
+    >
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }} className="contact-row">
         <div>
           <label htmlFor="contact-name" className="field-label">
@@ -135,7 +158,13 @@ export default function ContactForm() {
         </div>
       </div>
 
-      <Select id="contact-topic" label="What is this about?" value={form.topic} options={TOPICS} onChange={(v) => update("topic", v)} />
+      <Select
+        id="contact-topic"
+        label="What is this about?"
+        value={form.topic}
+        options={TOPICS}
+        onChange={(v) => update("topic", v)}
+      />
 
       <div>
         <label htmlFor="contact-message" className="field-label">

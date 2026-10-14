@@ -32,7 +32,14 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
         <div style={{ position: "absolute", inset: 0, background: "rgba(24,14,10,0.55)" }} aria-hidden="true" />
         <div style={{ position: "relative", padding: "44px 48px" }}>
           <div style={{ marginBottom: 32 }}>
-            <span style={{ display: "inline-flex", background: "rgba(255,255,255,0.94)", borderRadius: 12, padding: "8px 14px 8px 10px" }}>
+            <span
+              style={{
+                display: "inline-flex",
+                background: "rgba(255,255,255,0.94)",
+                borderRadius: 12,
+                padding: "8px 14px 8px 10px",
+              }}
+            >
               <Brand />
             </span>
           </div>
@@ -51,7 +58,15 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
             <br />
             Instantly found.
           </h2>
-          <p style={{ fontSize: "1rem", lineHeight: 1.65, color: "rgba(255,244,234,0.88)", maxWidth: 360, marginBottom: 26 }}>
+          <p
+            style={{
+              fontSize: "1rem",
+              lineHeight: 1.65,
+              color: "rgba(255,244,234,0.88)",
+              maxWidth: 360,
+              marginBottom: 26,
+            }}
+          >
             Photos from every angle land in one gallery, and everyone finds the ones they appear in.
           </p>
           <ul style={{ listStyle: "none", display: "flex", flexDirection: "column", gap: 12 }}>

@@ -124,7 +124,9 @@ function ConfirmEmailInner() {
               >
                 Verifying your email
               </h1>
-              <p style={{ fontSize: "0.9375rem", color: "var(--ink-2)", lineHeight: 1.6 }}>One moment while we confirm your link.</p>
+              <p style={{ fontSize: "0.9375rem", color: "var(--ink-2)", lineHeight: 1.6 }}>
+                One moment while we confirm your link.
+              </p>
             </motion.div>
           )}
 
@@ -214,7 +216,11 @@ function ConfirmEmailInner() {
                   marginBottom: 18,
                 }}
               >
-                {status === "missing-token" ? <CircleAlert size={30} strokeWidth={1.75} /> : <MailWarning size={30} strokeWidth={1.75} />}
+                {status === "missing-token" ? (
+                  <CircleAlert size={30} strokeWidth={1.75} />
+                ) : (
+                  <MailWarning size={30} strokeWidth={1.75} />
+                )}
               </span>
               <h1
                 style={{
@@ -245,7 +251,11 @@ function ConfirmEmailInner() {
                   <Link href="/login" className="btn-ghost" style={{ flex: 1 }}>
                     Sign in
                   </Link>
-                  <Link href="/register" className={status === "error" ? "btn-ghost" : "btn-primary"} style={{ flex: 1 }}>
+                  <Link
+                    href="/register"
+                    className={status === "error" ? "btn-ghost" : "btn-primary"}
+                    style={{ flex: 1 }}
+                  >
                     Create account
                     {status !== "error" && <ArrowRight size={16} strokeWidth={2.25} aria-hidden="true" />}
                   </Link>

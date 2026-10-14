@@ -198,7 +198,11 @@ function ResetPasswordInner() {
                         display: "flex",
                       }}
                     >
-                      {show ? <EyeOff size={18} strokeWidth={1.75} aria-hidden="true" /> : <Eye size={18} strokeWidth={1.75} aria-hidden="true" />}
+                      {show ? (
+                        <EyeOff size={18} strokeWidth={1.75} aria-hidden="true" />
+                      ) : (
+                        <Eye size={18} strokeWidth={1.75} aria-hidden="true" />
+                      )}
                     </button>
                   </div>
 
@@ -250,7 +254,10 @@ function ResetPasswordInner() {
                     aria-invalid={!!fieldErrors.confirm}
                     aria-describedby={fieldErrors.confirm ? "confirm-password-error" : undefined}
                     style={{
-                      borderColor: (touched && confirm.length > 0 && !matchOk) || fieldErrors.confirm ? "rgba(217,58,48,0.55)" : undefined,
+                      borderColor:
+                        (touched && confirm.length > 0 && !matchOk) || fieldErrors.confirm
+                          ? "rgba(217,58,48,0.55)"
+                          : undefined,
                     }}
                   />
                   {fieldErrors.confirm && touched ? (
@@ -261,7 +268,9 @@ function ResetPasswordInner() {
                     touched &&
                     confirm.length > 0 &&
                     !matchOk && (
-                      <p style={{ fontSize: "0.8125rem", fontWeight: 500, color: "#d93a30", marginTop: 7 }}>Passwords don&apos;t match yet.</p>
+                      <p style={{ fontSize: "0.8125rem", fontWeight: 500, color: "#d93a30", marginTop: 7 }}>
+                        Passwords don&apos;t match yet.
+                      </p>
                     )
                   )}
                 </div>

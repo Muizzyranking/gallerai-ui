@@ -3,7 +3,15 @@
 import { useEffect, useRef, useState } from "react";
 
 /* Fade-only reveal. No slide, no translate. Respects reduced motion. */
-export default function Fade({ children, delay = 0, className = "" }: { children: React.ReactNode; delay?: number; className?: string }) {
+export default function Fade({
+  children,
+  delay = 0,
+  className = "",
+}: {
+  children: React.ReactNode;
+  delay?: number;
+  className?: string;
+}) {
   const ref = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState(false);
 
@@ -23,7 +31,7 @@ export default function Fade({ children, delay = 0, className = "" }: { children
           }
         });
       },
-      { threshold: 0.12 }
+      { threshold: 0.12 },
     );
     io.observe(el);
     return () => io.disconnect();

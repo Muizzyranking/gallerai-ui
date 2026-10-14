@@ -7,7 +7,12 @@ export default function Footer() {
     <footer style={{ background: "var(--espresso)", color: "#f5e9da" }}>
       <div className="wrap">
         <div
-          style={{ display: "grid", gridTemplateColumns: "1.4fr 1fr 1fr 1fr", gap: "clamp(28px,5vw,56px)", padding: "64px 0 40px" }}
+          style={{
+            display: "grid",
+            gridTemplateColumns: "1.4fr 1fr 1fr 1fr",
+            gap: "clamp(28px,5vw,56px)",
+            padding: "64px 0 40px",
+          }}
           className="footer-grid"
         >
           <div>
@@ -63,8 +68,14 @@ export default function Footer() {
             alignItems: "center",
           }}
         >
-          <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.72rem", letterSpacing: "0.08em", color: "#a68d72" }}>{footer.bottom}</span>
-          <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.72rem", letterSpacing: "0.08em", color: "#a68d72" }}>
+          <span
+            style={{ fontFamily: "var(--font-mono)", fontSize: "0.72rem", letterSpacing: "0.08em", color: "#a68d72" }}
+          >
+            {footer.bottom}
+          </span>
+          <span
+            style={{ fontFamily: "var(--font-mono)", fontSize: "0.72rem", letterSpacing: "0.08em", color: "#a68d72" }}
+          >
             WEDDINGS · GRADUATIONS · CONCERTS · PARTIES · CONFERENCES
           </span>
         </div>

@@ -25,8 +25,18 @@ export default function ComplianceDoc({
             </p>
             <div style={{ display: "flex", flexDirection: "column", gap: 28 }}>
               {sections.map((s, i) => (
-                <div key={s.h} style={{ background: "#fff", border: "1px solid var(--line)", borderRadius: "var(--r-card)", padding: "26px 28px" }}>
-                  <h2 style={{ fontFamily: "var(--font-display)", fontSize: "1.2rem", fontWeight: 750, marginBottom: 10 }}>
+                <div
+                  key={s.h}
+                  style={{
+                    background: "#fff",
+                    border: "1px solid var(--line)",
+                    borderRadius: "var(--r-card)",
+                    padding: "26px 28px",
+                  }}
+                >
+                  <h2
+                    style={{ fontFamily: "var(--font-display)", fontSize: "1.2rem", fontWeight: 750, marginBottom: 10 }}
+                  >
                     <span style={{ color: "var(--accent)", marginRight: 10 }}>{String(i + 1).padStart(2, "0")}</span>
                     {s.h}
                   </h2>

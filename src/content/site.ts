@@ -271,7 +271,8 @@ export const finalCta = {
 };
 
 export const footer = {
-  tagline: "Event galleries where every guest finds their photos. Built for weddings, graduations, concerts, parties and professional events.",
+  tagline:
+    "Event galleries where every guest finds their photos. Built for weddings, graduations, concerts, parties and professional events.",
   columns: [
     {
       heading: "Product",
@@ -341,9 +342,13 @@ export const compliance = {
   terms: {
     title: "Terms of service",
     updated: "Last updated: January 2026. Edit this date in src/content/site.ts.",
-    intro: "These terms cover organisers, photographers and guests. Replace this draft with counsel-reviewed terms before launch.",
+    intro:
+      "These terms cover organisers, photographers and guests. Replace this draft with counsel-reviewed terms before launch.",
     sections: [
-      { h: "The service", p: "GallerAI hosts private event photo galleries with guest uploads and face-based search inside each event." },
+      {
+        h: "The service",
+        p: "GallerAI hosts private event photo galleries with guest uploads and face-based search inside each event.",
+      },
       {
         h: "Your content",
         p: "You keep ownership of photos you upload. You grant GallerAI a licence to host and display them inside your event gallery as you configure it.",
@@ -360,22 +365,35 @@ export const compliance = {
         h: "Plans and payment",
         p: "Free galleries include the limits shown on pricing. Paid events unlock the photo limits, hosting periods and download options in your plan.",
       },
-      { h: "Suspension", p: "We may suspend galleries that violate these terms or applicable law, and we will notify the organiser where possible." },
+      {
+        h: "Suspension",
+        p: "We may suspend galleries that violate these terms or applicable law, and we will notify the organiser where possible.",
+      },
       { h: "Contact", p: `Legal questions: ${site.contactEmail}.` },
     ],
   },
   cookies: {
     title: "Cookie policy",
     updated: "Last updated: January 2026.",
-    intro: "GallerAI uses a small set of cookies and local storage to keep you signed in and remember gallery preferences.",
+    intro:
+      "GallerAI uses a small set of cookies and local storage to keep you signed in and remember gallery preferences.",
     sections: [
-      { h: "Strictly necessary", p: "Session and security cookies that keep authentication working. The site cannot function without these." },
-      { h: "Preferences", p: "Remembering gallery view (all photos vs my photos) and recent selfie-search tokens on the same device." },
+      {
+        h: "Strictly necessary",
+        p: "Session and security cookies that keep authentication working. The site cannot function without these.",
+      },
+      {
+        h: "Preferences",
+        p: "Remembering gallery view (all photos vs my photos) and recent selfie-search tokens on the same device.",
+      },
       {
         h: "Analytics (optional)",
         p: "If enabled, privacy-friendly page analytics with no cross-site tracking. You can block these and the site still works.",
       },
-      { h: "Managing cookies", p: "Use your browser settings to clear or block cookies. Signing out clears the session cookie." },
+      {
+        h: "Managing cookies",
+        p: "Use your browser settings to clear or block cookies. Signing out clears the session cookie.",
+      },
     ],
   },
   data: {
@@ -387,8 +405,14 @@ export const compliance = {
         h: "One event at a time",
         p: "A selfie is compared only against photos in the gallery it was submitted to. There is no cross-event face database.",
       },
-      { h: "Guest control", p: "Guests choose whether to run a selfie search. No search runs in the background and no account is required." },
-      { h: "Organiser control", p: "Organisers can disable selfie search, disable downloads, or delete the event and all associated face data." },
+      {
+        h: "Guest control",
+        p: "Guests choose whether to run a selfie search. No search runs in the background and no account is required.",
+      },
+      {
+        h: "Organiser control",
+        p: "Organisers can disable selfie search, disable downloads, or delete the event and all associated face data.",
+      },
       {
         h: "Deletion",
         p: `Delete an event from settings to remove its photos and face data. Write to ${site.privacyEmail} for help with guest removals.`,

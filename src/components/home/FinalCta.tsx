@@ -20,11 +20,20 @@ export default function FinalCta() {
             }}
             id="final-grid"
           >
-            <div style={{ padding: "clamp(32px,5vw,64px)", display: "flex", flexDirection: "column", justifyContent: "center" }}>
+            <div
+              style={{
+                padding: "clamp(32px,5vw,64px)",
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
+              }}
+            >
               <h2 className="display-lg" style={{ color: "#fff", marginBottom: 16 }}>
                 {finalCta.heading}
               </h2>
-              <p style={{ fontSize: "1.05rem", lineHeight: 1.65, color: "#d8c3ab", maxWidth: 460, marginBottom: 30 }}>{finalCta.body}</p>
+              <p style={{ fontSize: "1.05rem", lineHeight: 1.65, color: "#d8c3ab", maxWidth: 460, marginBottom: 30 }}>
+                {finalCta.body}
+              </p>
               <div style={{ display: "flex", flexWrap: "wrap", gap: 12 }}>
                 <Link href={finalCta.primary.href} className="btn-primary">
                   {finalCta.primary.label}
@@ -45,7 +54,13 @@ export default function FinalCta() {
               </div>
             </div>
             <div style={{ position: "relative", minHeight: 300 }}>
-              <Image src={finalCta.image} alt={finalCta.imageAlt} fill sizes="(max-width: 900px) 100vw, 560px" style={{ objectFit: "cover" }} />
+              <Image
+                src={finalCta.image}
+                alt={finalCta.imageAlt}
+                fill
+                sizes="(max-width: 900px) 100vw, 560px"
+                style={{ objectFit: "cover" }}
+              />
             </div>
           </div>
         </Fade>

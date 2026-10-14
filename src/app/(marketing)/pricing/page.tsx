@@ -25,7 +25,15 @@ export default function PricingPage() {
             {pricing.everyPlan.map((f, i) => (
               <Fade key={f.title} delay={Math.min(i * 70, 210)}>
                 <div className="card" style={{ padding: "24px 22px", height: "100%" }}>
-                  <div style={{ fontFamily: "var(--font-display)", fontSize: "1rem", fontWeight: 800, color: "var(--accent-deep)", marginBottom: 8 }}>
+                  <div
+                    style={{
+                      fontFamily: "var(--font-display)",
+                      fontSize: "1rem",
+                      fontWeight: 800,
+                      color: "var(--accent-deep)",
+                      marginBottom: 8,
+                    }}
+                  >
                     0{i + 1}
                   </div>
                   <div style={{ fontSize: "1.02rem", fontWeight: 700, marginBottom: 8 }}>{f.title}</div>

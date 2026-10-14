@@ -18,7 +18,10 @@ export default function Pricing({ compact = false }: { compact?: boolean }) {
           </p>
         </Fade>
 
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 18, alignItems: "stretch" }} id="pricing-grid">
+        <div
+          style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 18, alignItems: "stretch" }}
+          id="pricing-grid"
+        >
           {pricing.plans.map((p, i) => (
             <Fade key={p.name} delay={i * 80}>
               <article
@@ -40,15 +43,43 @@ export default function Pricing({ compact = false }: { compact?: boolean }) {
                 )}
                 <div style={{ fontSize: "1rem", fontWeight: 700, marginBottom: 6 }}>{p.name}</div>
                 <div style={{ display: "flex", alignItems: "baseline", gap: 8, marginBottom: 4 }}>
-                  <span style={{ fontFamily: "var(--font-display)", fontSize: "2.6rem", fontWeight: 800, lineHeight: 1 }}>{p.price}</span>
+                  <span
+                    style={{ fontFamily: "var(--font-display)", fontSize: "2.6rem", fontWeight: 800, lineHeight: 1 }}
+                  >
+                    {p.price}
+                  </span>
                 </div>
-                <div style={{ fontSize: "0.86rem", fontWeight: 600, color: p.featured ? "#cbb69f" : "var(--ink-3)", marginBottom: 12 }}>{p.per}</div>
-                <p style={{ fontSize: "0.94rem", lineHeight: 1.6, color: p.featured ? "#d8c3ab" : "var(--ink-2)", marginBottom: 20 }}>{p.body}</p>
+                <div
+                  style={{
+                    fontSize: "0.86rem",
+                    fontWeight: 600,
+                    color: p.featured ? "#cbb69f" : "var(--ink-3)",
+                    marginBottom: 12,
+                  }}
+                >
+                  {p.per}
+                </div>
+                <p
+                  style={{
+                    fontSize: "0.94rem",
+                    lineHeight: 1.6,
+                    color: p.featured ? "#d8c3ab" : "var(--ink-2)",
+                    marginBottom: 20,
+                  }}
+                >
+                  {p.body}
+                </p>
                 <ul style={{ listStyle: "none", display: "flex", flexDirection: "column", gap: 10, marginBottom: 26 }}>
                   {p.points.map((pt) => (
                     <li
                       key={pt}
-                      style={{ display: "flex", gap: 10, fontSize: "0.93rem", lineHeight: 1.55, color: p.featured ? "#f0e2cf" : "var(--ink-2)" }}
+                      style={{
+                        display: "flex",
+                        gap: 10,
+                        fontSize: "0.93rem",
+                        lineHeight: 1.55,
+                        color: p.featured ? "#f0e2cf" : "var(--ink-2)",
+                      }}
                     >
                       <svg
                         width="16"
@@ -69,7 +100,11 @@ export default function Pricing({ compact = false }: { compact?: boolean }) {
                   ))}
                 </ul>
                 <div style={{ marginTop: "auto" }}>
-                  <Link href={p.cta.href} className={p.featured ? "btn-primary" : "btn-secondary"} style={{ width: "100%" }}>
+                  <Link
+                    href={p.cta.href}
+                    className={p.featured ? "btn-primary" : "btn-secondary"}
+                    style={{ width: "100%" }}
+                  >
                     {p.cta.label}
                   </Link>
                 </div>

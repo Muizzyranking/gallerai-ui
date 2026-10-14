@@ -22,15 +22,33 @@ export default function HowItWorks() {
         <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 20 }} id="hiw-grid">
           {howItWorks.steps.map((s, i) => (
             <Fade key={s.n} delay={Math.min(i * 80, 160)}>
-              <article className="card" style={{ overflow: "hidden", height: "100%", display: "flex", flexDirection: "column" }}>
+              <article
+                className="card"
+                style={{ overflow: "hidden", height: "100%", display: "flex", flexDirection: "column" }}
+              >
                 <div style={{ position: "relative", aspectRatio: "16/10" }}>
-                  <Image src={s.image} alt={s.imageAlt} fill sizes="(max-width: 900px) 100vw, 380px" style={{ objectFit: "cover" }} loading="lazy" />
+                  <Image
+                    src={s.image}
+                    alt={s.imageAlt}
+                    fill
+                    sizes="(max-width: 900px) 100vw, 380px"
+                    style={{ objectFit: "cover" }}
+                    loading="lazy"
+                  />
                   <span style={{ position: "absolute", top: 12, left: 12 }} className="event-tag">
                     {s.n}
                   </span>
                 </div>
                 <div style={{ padding: "22px 22px 26px" }}>
-                  <h3 style={{ fontFamily: "var(--font-display)", fontSize: "1.3rem", fontWeight: 750, letterSpacing: "-0.01em", marginBottom: 10 }}>
+                  <h3
+                    style={{
+                      fontFamily: "var(--font-display)",
+                      fontSize: "1.3rem",
+                      fontWeight: 750,
+                      letterSpacing: "-0.01em",
+                      marginBottom: 10,
+                    }}
+                  >
                     {s.title}
                   </h3>
                   <p className="small-text">{s.body}</p>
@@ -43,7 +61,14 @@ export default function HowItWorks() {
         <Fade>
           <div
             className="card"
-            style={{ marginTop: 20, padding: "22px 26px", background: "var(--cream)", display: "flex", gap: 16, alignItems: "flex-start" }}
+            style={{
+              marginTop: 20,
+              padding: "22px 26px",
+              background: "var(--cream)",
+              display: "flex",
+              gap: 16,
+              alignItems: "flex-start",
+            }}
           >
             <span
               aria-hidden="true"

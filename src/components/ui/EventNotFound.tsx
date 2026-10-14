@@ -86,7 +86,8 @@ export default function EventNotFound() {
           This gallery doesn't exist
         </h1>
         <p style={{ fontSize: "1rem", color: "var(--ink-2)", lineHeight: 1.65, marginBottom: 32 }}>
-          The event may have been removed, made private, or the link might be incomplete. Check with the organiser for the correct link.
+          The event may have been removed, made private, or the link might be incomplete. Check with the organiser for
+          the correct link.
         </p>
 
         <div

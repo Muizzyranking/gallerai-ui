@@ -22,7 +22,11 @@ export default function Navbar() {
       <div className="wrap" style={{ height: 68, display: "flex", alignItems: "center", gap: 28 }}>
         <Brand />
 
-        <nav aria-label="Primary" style={{ flex: 1, display: "flex", justifyContent: "center", gap: 28 }} className="nav-desktop">
+        <nav
+          aria-label="Primary"
+          style={{ flex: 1, display: "flex", justifyContent: "center", gap: 28 }}
+          className="nav-desktop"
+        >
           {nav.primary.map((l) => (
             <Link
               key={l.href}
@@ -41,7 +45,10 @@ export default function Navbar() {
         </nav>
 
         <div style={{ display: "flex", alignItems: "center", gap: 12 }} className="nav-desktop">
-          <Link href="/login" style={{ fontSize: "0.95rem", fontWeight: 600, color: "var(--ink-2)", padding: "10px 12px" }}>
+          <Link
+            href="/login"
+            style={{ fontSize: "0.95rem", fontWeight: 600, color: "var(--ink-2)", padding: "10px 12px" }}
+          >
             Sign in
           </Link>
           <Link href="/register" className="btn-primary" style={{ padding: "11px 20px", fontSize: "0.9rem" }}>
@@ -103,7 +110,13 @@ export default function Navbar() {
                 key={l.href}
                 href={l.href}
                 onClick={() => setOpen(false)}
-                style={{ padding: "14px 4px", borderBottom: "1px solid var(--line)", fontSize: "1rem", fontWeight: 600, color: "var(--ink)" }}
+                style={{
+                  padding: "14px 4px",
+                  borderBottom: "1px solid var(--line)",
+                  fontSize: "1rem",
+                  fontWeight: 600,
+                  color: "var(--ink)",
+                }}
               >
                 {l.label}
               </Link>

@@ -4,10 +4,22 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 
 const MATCHES = [
-  { src: "https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=300&auto=format&fit=crop", alt: "Couple dancing at wedding" },
-  { src: "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?q=80&w=300&auto=format&fit=crop", alt: "Group of friends laughing together" },
-  { src: "https://images.unsplash.com/photo-1511632765486-a01980e01a18?q=80&w=300&auto=format&fit=crop", alt: "Friends taking photos at an event" },
-  { src: "https://images.unsplash.com/photo-1543269865-cbf427effbad?q=80&w=300&auto=format&fit=crop", alt: "Guests posing together" },
+  {
+    src: "https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=300&auto=format&fit=crop",
+    alt: "Couple dancing at wedding",
+  },
+  {
+    src: "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?q=80&w=300&auto=format&fit=crop",
+    alt: "Group of friends laughing together",
+  },
+  {
+    src: "https://images.unsplash.com/photo-1511632765486-a01980e01a18?q=80&w=300&auto=format&fit=crop",
+    alt: "Friends taking photos at an event",
+  },
+  {
+    src: "https://images.unsplash.com/photo-1543269865-cbf427effbad?q=80&w=300&auto=format&fit=crop",
+    alt: "Guests posing together",
+  },
 ];
 
 export default function FaceScanDemo() {
@@ -20,7 +32,10 @@ export default function FaceScanDemo() {
       setPhase("matched");
       return;
     }
-    const t = setTimeout(() => setPhase((p) => (p === "scanning" ? "matched" : "scanning")), phase === "scanning" ? 2600 : 3400);
+    const t = setTimeout(
+      () => setPhase((p) => (p === "scanning" ? "matched" : "scanning")),
+      phase === "scanning" ? 2600 : 3400,
+    );
     return () => clearTimeout(t);
   }, [phase]);
 
@@ -83,7 +98,11 @@ export default function FaceScanDemo() {
                 borderBottomRightRadius: 6,
               },
             ].map((pos) => (
-              <span key={pos.key} aria-hidden="true" style={{ position: "absolute", width: 26, height: 26, ...pos } as React.CSSProperties} />
+              <span
+                key={pos.key}
+                aria-hidden="true"
+                style={{ position: "absolute", width: 26, height: 26, ...pos } as React.CSSProperties}
+              />
             ))}
           </>
         ) : (
@@ -103,7 +122,13 @@ export default function FaceScanDemo() {
             {MATCHES.map((m) => (
               <div
                 key={m.src}
-                style={{ position: "relative", borderRadius: 6, overflow: "hidden", border: "1.5px solid rgba(62,207,142,0.55)", minHeight: 0 }}
+                style={{
+                  position: "relative",
+                  borderRadius: 6,
+                  overflow: "hidden",
+                  border: "1.5px solid rgba(62,207,142,0.55)",
+                  minHeight: 0,
+                }}
               >
                 <Image src={m.src} alt={m.alt} fill sizes="150px" style={{ objectFit: "cover" }} />
               </div>
@@ -153,7 +178,12 @@ export default function FaceScanDemo() {
           >
             <span
               aria-hidden="true"
-              style={{ width: 7, height: 7, borderRadius: "50%", background: phase === "matched" ? "#3ecf8e" : "var(--accent)" }}
+              style={{
+                width: 7,
+                height: 7,
+                borderRadius: "50%",
+                background: phase === "matched" ? "#3ecf8e" : "var(--accent)",
+              }}
               className={phase === "matched" ? undefined : "scan-blink"}
             />
             LIVE
@@ -163,11 +193,29 @@ export default function FaceScanDemo() {
 
       {/* footer — fixed height, single line */}
       <div
-        style={{ height: 50, flexShrink: 0, display: "flex", alignItems: "center", padding: "0 16px", borderTop: "1px solid rgba(255,255,255,0.1)" }}
+        style={{
+          height: 50,
+          flexShrink: 0,
+          display: "flex",
+          alignItems: "center",
+          padding: "0 16px",
+          borderTop: "1px solid rgba(255,255,255,0.1)",
+        }}
       >
         {phase === "matched" ? (
-          <span style={{ fontSize: "0.84rem", fontWeight: 700, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
-            Highlight reel ready <span style={{ color: "#ffb3ab", borderBottom: "2px solid rgba(255,83,72,0.5)", marginLeft: 6 }}>Download</span>
+          <span
+            style={{
+              fontSize: "0.84rem",
+              fontWeight: 700,
+              whiteSpace: "nowrap",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+            }}
+          >
+            Highlight reel ready{" "}
+            <span style={{ color: "#ffb3ab", borderBottom: "2px solid rgba(255,83,72,0.5)", marginLeft: 6 }}>
+              Download
+            </span>
           </span>
         ) : (
           <span

@@ -4,7 +4,14 @@ import { galleryStrip } from "@/content/site";
 
 const COPIES = [0, 1, 2, 3];
 
-function MarqueeRow({ images, reverse = false }: { images: typeof galleryStrip.images; reverse?: boolean; label: string }) {
+function MarqueeRow({
+  images,
+  reverse = false,
+}: {
+  images: typeof galleryStrip.images;
+  reverse?: boolean;
+  label: string;
+}) {
   return (
     <div className="marquee-viewport">
       <div className={`marquee-track${reverse ? " marquee-reverse" : ""}`}>
@@ -14,10 +21,24 @@ function MarqueeRow({ images, reverse = false }: { images: typeof galleryStrip.i
               <figure
                 key={`${g}-${img.caption}`}
                 className="card"
-                style={{ overflow: "hidden", margin: 0, width: 280, flexShrink: 0, position: "relative", border: "none" }}
+                style={{
+                  overflow: "hidden",
+                  margin: 0,
+                  width: 280,
+                  flexShrink: 0,
+                  position: "relative",
+                  border: "none",
+                }}
               >
                 <div style={{ position: "relative", aspectRatio: "1/1" }}>
-                  <Image src={img.src} alt={g === 0 ? img.alt : ""} fill sizes="280px" style={{ objectFit: "cover" }} loading="lazy" />
+                  <Image
+                    src={img.src}
+                    alt={g === 0 ? img.alt : ""}
+                    fill
+                    sizes="280px"
+                    style={{ objectFit: "cover" }}
+                    loading="lazy"
+                  />
                 </div>
                 <figcaption
                   style={{

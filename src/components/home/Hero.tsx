@@ -47,22 +47,51 @@ export default function Hero() {
               <FaceScanDemo />
               <div className="card" style={{ padding: "18px 20px", background: "#fff" }}>
                 <div
-                  style={{ fontFamily: "var(--font-mono)", fontSize: "0.7rem", letterSpacing: "0.14em", color: "var(--accent-ink)", marginBottom: 8 }}
+                  style={{
+                    fontFamily: "var(--font-mono)",
+                    fontSize: "0.7rem",
+                    letterSpacing: "0.14em",
+                    color: "var(--accent-ink)",
+                    marginBottom: 8,
+                  }}
                 >
                   SELFIE SEARCH
                 </div>
-                <div style={{ fontFamily: "var(--font-display)", fontSize: "1.4rem", fontWeight: 800, lineHeight: 1.2, color: "var(--ink)" }}>
+                <div
+                  style={{
+                    fontFamily: "var(--font-display)",
+                    fontSize: "1.4rem",
+                    fontWeight: 800,
+                    lineHeight: 1.2,
+                    color: "var(--ink)",
+                  }}
+                >
                   Find every photo you&apos;re in
                 </div>
-                <div style={{ marginTop: 6, fontSize: "0.9rem", color: "var(--ink-2)" }}>No scrolling, no shared drives</div>
+                <div style={{ marginTop: 6, fontSize: "0.9rem", color: "var(--ink-2)" }}>
+                  No scrolling, no shared drives
+                </div>
               </div>
             </div>
             <div style={{ display: "flex", flexDirection: "column", gap: 24, minWidth: 0 }}>
-              <div className="card" style={{ padding: "18px 20px", background: "var(--marigold-soft)", borderColor: "#ecd9a8" }}>
-                <div style={{ fontFamily: "var(--font-mono)", fontSize: "0.7rem", letterSpacing: "0.14em", color: "#8a6100", marginBottom: 8 }}>
+              <div
+                className="card"
+                style={{ padding: "18px 20px", background: "var(--marigold-soft)", borderColor: "#ecd9a8" }}
+              >
+                <div
+                  style={{
+                    fontFamily: "var(--font-mono)",
+                    fontSize: "0.7rem",
+                    letterSpacing: "0.14em",
+                    color: "#8a6100",
+                    marginBottom: 8,
+                  }}
+                >
                   LIVE GALLERY
                 </div>
-                <div style={{ fontFamily: "var(--font-display)", fontSize: "2rem", fontWeight: 800, lineHeight: 1 }}>248</div>
+                <div style={{ fontFamily: "var(--font-display)", fontSize: "2rem", fontWeight: 800, lineHeight: 1 }}>
+                  248
+                </div>
                 <div style={{ fontSize: "0.9rem", color: "#6b5420" }}>photos in Amara & Daniel&apos;s gallery</div>
               </div>
               <figure className="card" style={{ overflow: "hidden", margin: 0 }}>
@@ -77,7 +106,15 @@ export default function Hero() {
                   />
                 </div>
                 <figcaption className="hero-caption">
-                  <span style={{ fontSize: "0.9rem", fontWeight: 700, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+                  <span
+                    style={{
+                      fontSize: "0.9rem",
+                      fontWeight: 700,
+                      whiteSpace: "nowrap",
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                    }}
+                  >
                     Amara & Daniel — Wedding
                   </span>
                   <span className="event-tag-light" style={{ flexShrink: 0 }}>

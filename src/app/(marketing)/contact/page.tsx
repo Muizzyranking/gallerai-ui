@@ -12,14 +12,28 @@ export default function ContactPage() {
         lede="Planning a wedding, festival, conference or a season of events? Tell us the date and guest count and we will recommend the right setup."
       />
       <section style={{ background: "var(--paper)" }}>
-        <div className="wrap" style={{ maxWidth: 860, paddingTop: 48, paddingBottom: 88, display: "flex", flexDirection: "column", gap: 20 }}>
+        <div
+          className="wrap"
+          style={{
+            maxWidth: 860,
+            paddingTop: 48,
+            paddingBottom: 88,
+            display: "flex",
+            flexDirection: "column",
+            gap: 20,
+          }}
+        >
           <Fade>
             <ContactForm />
           </Fade>
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20 }} id="contact-grid">
             <Fade delay={80}>
               <div className="card" style={{ padding: "30px 28px" }}>
-                <h2 style={{ fontFamily: "var(--font-display)", fontSize: "1.3rem", fontWeight: 750, marginBottom: 10 }}>Event planning</h2>
+                <h2
+                  style={{ fontFamily: "var(--font-display)", fontSize: "1.3rem", fontWeight: 750, marginBottom: 10 }}
+                >
+                  Event planning
+                </h2>
                 <p className="body-text" style={{ marginBottom: 18 }}>
                   Dates, guest counts, photographer workflow, QR posters.
                 </p>
@@ -61,7 +75,11 @@ export default function ContactPage() {
             </Fade>
             <Fade delay={140}>
               <div className="card" style={{ padding: "30px 28px" }}>
-                <h2 style={{ fontFamily: "var(--font-display)", fontSize: "1.3rem", fontWeight: 750, marginBottom: 10 }}>Support & privacy</h2>
+                <h2
+                  style={{ fontFamily: "var(--font-display)", fontSize: "1.3rem", fontWeight: 750, marginBottom: 10 }}
+                >
+                  Support & privacy
+                </h2>
                 <p className="body-text" style={{ marginBottom: 18 }}>
                   Gallery help, removals, data and face-data requests.
                 </p>
