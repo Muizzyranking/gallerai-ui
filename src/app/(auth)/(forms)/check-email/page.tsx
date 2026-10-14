@@ -1,12 +1,18 @@
 "use client";
 
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
-import { Suspense } from "react";
+import { Suspense, useEffect, useState } from "react";
 
 function CheckEmailInner() {
-  const searchParams = useSearchParams();
-  const email = searchParams.get("email");
+  const [email, setEmail] = useState<string | null>(null);
+
+  useEffect(() => {
+    try {
+      setEmail(sessionStorage.getItem("pending_email"));
+    } catch {
+      setEmail(null);
+    }
+  }, []);
 
   return (
     <div style={{ textAlign: "center" }}>
@@ -28,7 +34,14 @@ function CheckEmailInner() {
         ✉
       </span>
       <h1
-        style={{ fontFamily: "var(--font-display)", fontSize: "2rem", fontWeight: 800, letterSpacing: "-0.025em", lineHeight: 1.1, marginBottom: 12 }}
+        style={{
+          fontFamily: "var(--font-display)",
+          fontSize: "2rem",
+          fontWeight: 800,
+          letterSpacing: "-0.025em",
+          lineHeight: 1.1,
+          marginBottom: 12,
+        }}
       >
         Check your inbox
       </h1>
@@ -43,17 +56,14 @@ function CheckEmailInner() {
         .
       </p>
       <p className="body-text" style={{ marginBottom: 28 }}>
-        We sent you a verification link. Click it to activate your account, then sign in. Check spam if it does not show up.
+        We sent you a verification link. Click it to activate your account, then sign in. Check spam if it does not show
+        up.
       </p>
       <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
         <Link href="/login" className="btn-primary" style={{ width: "100%" }}>
           Continue to sign in
         </Link>
-        <Link
-          href={`/resend-verification${email ? `?email=${encodeURIComponent(email)}` : ""}`}
-          className="text-link"
-          style={{ fontSize: "0.92rem" }}
-        >
+        <Link href="/resend-verification" className="text-link" style={{ fontSize: "0.92rem" }}>
           Didn&apos;t get it? Resend the email
         </Link>
       </div>

@@ -14,11 +14,12 @@ export default function RegisterPage() {
   const router = useRouter();
   const { register } = useAuth();
 
-  const { form, fieldErrors, apiError, setApiError, loading, setLoading, update, validateAll, applyServerErrors } = useAuthForm(
-    registerSchema,
-    { display_name: "", email: "", password: "" },
-    (v) => ({ display_name: v.display_name.trim(), email: v.email.trim().toLowerCase(), password: v.password }),
-  );
+  const { form, fieldErrors, apiError, setApiError, loading, setLoading, update, validateAll, applyServerErrors } =
+    useAuthForm(registerSchema, { display_name: "", email: "", password: "" }, (v) => ({
+      display_name: v.display_name.trim(),
+      email: v.email.trim().toLowerCase(),
+      password: v.password,
+    }));
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -27,7 +28,12 @@ export default function RegisterPage() {
     setLoading(true);
     try {
       await register(form.display_name.trim(), form.email.trim().toLowerCase(), form.password);
-      router.push(`/check-email?email=${encodeURIComponent(form.email.trim().toLowerCase())}`);
+      try {
+        sessionStorage.setItem("pending_email", form.email.trim().toLowerCase());
+      } catch {
+        // Storage unavailable — check-email page handles the missing case.
+      }
+      router.push("/check-email");
     } catch (err) {
       if (err instanceof ApiError && err.hasFieldErrors) {
         applyServerErrors(err.fieldErrors);
@@ -110,10 +116,26 @@ export default function RegisterPage() {
         </button>
       </form>
 
-      <SocialAuthSection />
+      <SocialAuthSection redirectTo="/dashboard" onError={setApiError} />
 
-      <div style={{ marginTop: 18, padding: "14px 16px", background: "var(--cream)", border: "1px solid var(--line)", borderRadius: "var(--r-ctl)" }}>
-        <p style={{ fontFamily: "var(--font-mono)", fontSize: "0.7rem", letterSpacing: "0.08em", color: "var(--ink-2)", textAlign: "center" }}>
+      <div
+        style={{
+          marginTop: 18,
+          padding: "14px 16px",
+          background: "var(--cream)",
+          border: "1px solid var(--line)",
+          borderRadius: "var(--r-ctl)",
+        }}
+      >
+        <p
+          style={{
+            fontFamily: "var(--font-mono)",
+            fontSize: "0.7rem",
+            letterSpacing: "0.08em",
+            color: "var(--ink-2)",
+            textAlign: "center",
+          }}
+        >
           FREE PLAN · 1 EVENT · 100 PHOTOS · NO CARD NEEDED
         </p>
       </div>

@@ -16,11 +16,11 @@ function LoginInner() {
   const searchParams = useSearchParams();
   const { login } = useAuth();
 
-  const { form, fieldErrors, apiError, setApiError, loading, setLoading, update, validateAll, applyServerErrors } = useAuthForm(
-    loginSchema,
-    { email: "", password: "" },
-    (v) => ({ email: v.email.trim().toLowerCase(), password: v.password }),
-  );
+  const { form, fieldErrors, apiError, setApiError, loading, setLoading, update, validateAll, applyServerErrors } =
+    useAuthForm(loginSchema, { email: "", password: "" }, (v) => ({
+      email: v.email.trim().toLowerCase(),
+      password: v.password,
+    }));
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -35,7 +35,11 @@ function LoginInner() {
         applyServerErrors(err.fieldErrors);
       } else {
         setApiError(
-          err instanceof ApiError ? (err.status === 401 ? "Incorrect email or password." : err.message) : "Something went wrong. Please try again.",
+          err instanceof ApiError
+            ? err.status === 401
+              ? "Incorrect email or password."
+              : err.message
+            : "Something went wrong. Please try again.",
         );
       }
     } finally {
@@ -96,7 +100,7 @@ function LoginInner() {
         </button>
       </form>
 
-      <SocialAuthSection />
+      <SocialAuthSection redirectTo={searchParams.get("next") ?? "/dashboard"} onError={setApiError} />
     </div>
   );
 }

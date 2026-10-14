@@ -1,7 +1,6 @@
 "use client";
 
-import { useSearchParams } from "next/navigation";
-import { Suspense, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import AuthHeader from "@/components/auth/AuthHeader";
 import EmailSentNotice from "@/components/auth/EmailSentNotice";
 import { TextField } from "@/components/auth/Fields";
@@ -11,14 +10,23 @@ import { ApiError, auth } from "@/lib/api";
 import { resendVerificationSchema } from "@/lib/auth-schemas";
 
 function ResendInner() {
-  const searchParams = useSearchParams();
   const [sent, setSent] = useState(false);
   const [apiError, setApiError] = useState("");
   const { form, fieldErrors, loading, setLoading, update, validateAll, applyServerErrors } = useAuthForm(
     resendVerificationSchema,
-    { email: searchParams.get("email") ?? "" },
+    { email: "" },
     (v) => ({ email: v.email.trim().toLowerCase() }),
   );
+
+  // Prefill from the signup handoff (never from the URL).
+  useEffect(() => {
+    try {
+      const pending = sessionStorage.getItem("pending_email");
+      if (pending) update("email", pending);
+    } catch {
+      // ignore
+    }
+  }, [update]);
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -47,8 +55,8 @@ function ResendInner() {
         title="Check your inbox"
         message={
           <>
-            If an account exists for <strong style={{ color: "var(--ink)" }}>{form.email.trim().toLowerCase()}</strong>, a new verification
-            link is on its way. Check spam too.
+            If an account exists for <strong style={{ color: "var(--ink)" }}>{form.email.trim().toLowerCase()}</strong>,
+            a new verification link is on its way. Check spam too.
           </>
         }
       />

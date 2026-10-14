@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 import { auth, type User } from "@/lib/api";
+import { getGoogleIdToken } from "@/lib/google";
 
 export function useAuth() {
   const router = useRouter();
@@ -31,6 +32,14 @@ export function useAuth() {
     return current;
   };
 
+  const loginWithGoogle = async (): Promise<User | null> => {
+    const idToken = await getGoogleIdToken();
+    const result = await auth.googleSignIn(idToken);
+    const current = result.user ?? (await refreshUser());
+    if (current) setUser(current);
+    return current;
+  };
+
   const register = async (display_name: string, email: string, password: string): Promise<string> => {
     const result = await auth.register({ display_name, email, password });
     return result.message;
@@ -50,6 +59,7 @@ export function useAuth() {
     isReady,
     isAuthed: !!user,
     login,
+    loginWithGoogle,
     register,
     logout,
     refreshUser,

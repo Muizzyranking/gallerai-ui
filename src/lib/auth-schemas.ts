@@ -1,7 +1,10 @@
 import { z } from "zod";
 
-
-const emailField = z.string().trim().min(1, "Enter your email address.").email("Enter a valid email address.").max(254, "That email looks too long.");
+const emailField = z
+  .email("Enter a valid email address.")
+  .trim()
+  .min(1, "Enter your email address.")
+  .max(254, "That email looks too long.");
 
 const passwordField = z
   .string()
@@ -41,7 +44,6 @@ export const resetPasswordSchema = z
 
 export type FieldErrors = Record<string, string | undefined>;
 
-/** Validate `values` against `schema`; returns field-keyed errors or null. */
 export function validateFields<T>(schema: z.ZodType<T>, values: unknown): FieldErrors | null {
   const result = (schema as z.ZodType<unknown>).safeParse(values);
   if (result.success) return null;
