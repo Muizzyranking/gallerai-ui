@@ -5,19 +5,19 @@ import { useEffect, useState } from "react";
 
 const MATCHES = [
   {
-    src: "https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=300&auto=format&fit=crop",
-    alt: "Couple dancing at wedding",
+    src: "/images/birthday.jpg",
+    alt: "Birthday party with friends",
   },
   {
-    src: "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?q=80&w=300&auto=format&fit=crop",
+    src: "/images/party.jpg",
     alt: "Group of friends laughing together",
   },
   {
-    src: "https://images.unsplash.com/photo-1511632765486-a01980e01a18?q=80&w=300&auto=format&fit=crop",
+    src: "/images/graduation.jpg",
     alt: "Friends taking photos at an event",
   },
   {
-    src: "https://images.unsplash.com/photo-1543269865-cbf427effbad?q=80&w=300&auto=format&fit=crop",
+    src: "/images/concert.jpg",
     alt: "Guests posing together",
   },
 ];
@@ -57,7 +57,7 @@ export default function FaceScanDemo() {
         {phase === "scanning" ? (
           <>
             <Image
-              src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=500&auto=format&fit=crop"
+              src="/images/person-face.jpg"
               alt="Guest selfie being matched"
               fill
               sizes="300px"

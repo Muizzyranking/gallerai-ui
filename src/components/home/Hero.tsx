@@ -97,7 +97,7 @@ export default function Hero() {
               <figure className="card" style={{ overflow: "hidden", margin: 0 }}>
                 <div style={{ position: "relative", aspectRatio: "1/1" }}>
                   <Image
-                    src="https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=700&auto=format&fit=crop"
+                    src="/images/wedding.jpg"
                     alt="Wedding couple dancing while guests celebrate"
                     fill
                     sizes="300px"
