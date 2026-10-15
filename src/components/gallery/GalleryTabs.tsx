@@ -31,6 +31,8 @@ export function TabButton({
         display: "flex",
         alignItems: "center",
         gap: 8,
+        flexShrink: 0,
+        whiteSpace: "nowrap",
       }}
     >
       {children}
@@ -71,7 +73,7 @@ export default function GalleryTabs({
   scanned: boolean;
 }) {
   return (
-    <div style={{ display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap" }}>
+    <div className="gallery-tabs">
       <TabButton active={tab === "all"} onClick={() => onTab("all")} count={total}>
         All
       </TabButton>
@@ -84,6 +86,19 @@ export default function GalleryTabs({
       <TabButton active={tab === "videos"} onClick={() => onTab("videos")} count={videos}>
         Videos
       </TabButton>
+      <style>{`
+        .gallery-tabs {
+          display: flex;
+          gap: 8px;
+          align-items: center;
+          flex-wrap: nowrap;
+          overflow-x: auto;
+          max-width: 100%;
+          scrollbar-width: none;
+          -webkit-overflow-scrolling: touch;
+        }
+        .gallery-tabs::-webkit-scrollbar { display: none; }
+      `}</style>
     </div>
   );
 }
