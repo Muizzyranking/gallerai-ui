@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from "react";
 /* Shared trigger + popup styling (theme-aware, matches text inputs). */
 const triggerStyle: React.CSSProperties = {
   width: "100%",
+  minWidth: 0,
   display: "flex",
   alignItems: "center",
   justifyContent: "space-between",
@@ -132,7 +133,7 @@ export function DatePicker({
   const label = formatDateLabel(value);
 
   return (
-    <div ref={ref} style={{ position: "relative" }}>
+    <div ref={ref} style={{ position: "relative", minWidth: 0 }}>
       <button
         type="button"
         onClick={() => (open ? setOpen(false) : openPicker())}
@@ -143,6 +144,8 @@ export function DatePicker({
             display: "inline-flex",
             alignItems: "center",
             gap: 10,
+            flex: 1,
+            minWidth: 0,
             color: label ? "var(--ink)" : "var(--ink-3)",
             overflow: "hidden",
             whiteSpace: "nowrap",
@@ -355,7 +358,7 @@ export function TimePicker({
   const label = formatTimeLabel(value);
 
   return (
-    <div ref={ref} style={{ position: "relative" }}>
+    <div ref={ref} style={{ position: "relative", minWidth: 0 }}>
       <button
         type="button"
         onClick={() => setOpen((o) => !o)}
@@ -366,7 +369,12 @@ export function TimePicker({
             display: "inline-flex",
             alignItems: "center",
             gap: 10,
+            flex: 1,
+            minWidth: 0,
             color: label ? "var(--ink)" : "var(--ink-3)",
+            overflow: "hidden",
+            whiteSpace: "nowrap",
+            textOverflow: "ellipsis",
           }}
         >
           <svg

@@ -77,7 +77,7 @@ export function PageHeader({
 /* ── Form field ──────────────────────────────────────────── */
 export function Field({ label, hint, children }: { label: string; hint?: string; children: React.ReactNode }) {
   return (
-    <div style={{ display: "flex", flexDirection: "column", gap: 7 }}>
+    <div style={{ display: "flex", flexDirection: "column", gap: 7, minWidth: 0 }}>
       {/* biome-ignore lint/a11y/noLabelWithoutControl: the control is passed as children, wrapped by this label */}
       <label className="auth-label" style={{ marginBottom: 0 }}>
         {label}
