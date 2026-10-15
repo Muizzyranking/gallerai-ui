@@ -216,12 +216,17 @@ a {
     padding: 0 20px;
   }
 }
+/* NOTE: vertical padding only — this class is always combined with
+   .wrap, and a padding shorthand here would wipe out .wrap's
+   horizontal gutters (equal specificity, later rule wins). */
 .section-pad {
-  padding: 96px 0;
+  padding-top: 96px;
+  padding-bottom: 96px;
 }
 @media (max-width: 768px) {
   .section-pad {
-    padding: 64px 0;
+    padding-top: 64px;
+    padding-bottom: 64px;
   }
 }
 
