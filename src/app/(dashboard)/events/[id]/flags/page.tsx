@@ -66,14 +66,12 @@ export default function FlagsPage() {
       <div style={{ padding: `40px ${PAD} 28px`, borderBottom: "1px solid var(--rule)" }}>
         <Link
           href="/dashboard"
+          className="db-backlink"
           style={{
             display: "inline-flex",
             alignItems: "center",
             gap: 7,
-            fontFamily: "var(--font-body)",
-            fontSize: "0.88rem",
-            color: "var(--ink-2)",
-            textDecoration: "none",
+            lineHeight: 1,
             marginBottom: 24,
           }}
         >

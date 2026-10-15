@@ -129,14 +129,12 @@ export default function BinPage() {
       <div style={{ padding: `40px ${PAD} 28px`, borderBottom: "1px solid var(--rule)" }}>
         <Link
           href="/dashboard"
+          className="db-backlink"
           style={{
             display: "inline-flex",
             alignItems: "center",
             gap: 7,
-            fontFamily: "var(--font-body)",
-            fontSize: "0.88rem",
-            color: "var(--ink-2)",
-            textDecoration: "none",
+            lineHeight: 1,
             marginBottom: 24,
           }}
         >
@@ -258,7 +256,7 @@ export default function BinPage() {
             </div>
           ) : (
             <>
-              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))", gap: 16 }}>
+              <div className="bin-grid">
                 {items.map((card) => (
                   <motion.div
                     key={card.id}
@@ -271,30 +269,30 @@ export default function BinPage() {
                       overflow: "hidden",
                     }}
                   >
-                    <div style={{ aspectRatio: "1", background: "var(--bg-2)" }}>
+                    {/* position:relative is required: Thumb uses fill layout */}
+                    <div style={{ position: "relative", aspectRatio: "1", background: "var(--bg-2)" }}>
                       <Thumb card={card} />
                     </div>
-                    <div style={{ padding: 12 }}>
+                    <div style={{ padding: 10 }}>
                       <p
                         style={{
                           fontFamily: "var(--font-body)",
-                          fontSize: "0.82rem",
+                          fontSize: "0.78rem",
                           color: "var(--ink)",
                           overflow: "hidden",
                           textOverflow: "ellipsis",
                           whiteSpace: "nowrap",
-                          marginBottom: 10,
+                          marginBottom: 8,
                         }}
                       >
                         {card.filename}
                       </p>
-                      <div style={{ display: "flex", gap: 8 }}>
+                      <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
                         <Button
                           onClick={() => restoreMutation.mutate(card.id)}
                           disabled={restoreMutation.isPending}
                           variant="primary"
                           size="sm"
-                          className="flex-1"
                         >
                           Restore
                         </Button>
@@ -303,7 +301,6 @@ export default function BinPage() {
                           disabled={hardMutation.isPending}
                           variant="danger"
                           size="sm"
-                          className="flex-1"
                         >
                           Delete forever
                         </Button>
@@ -402,7 +399,11 @@ export default function BinPage() {
           </motion.div>
         )}
       </AnimatePresence>
-      <style>{`.label-coral{font-family:var(--font-mono);font-size:0.7rem;text-transform:uppercase;letter-spacing:0.12em;color:var(--coral);font-weight:600;}`}</style>
+      <style>{`.label-coral{font-family:var(--font-mono);font-size:0.7rem;text-transform:uppercase;letter-spacing:0.12em;color:var(--coral);font-weight:600;}
+        .bin-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10; }
+        @media (min-width: 1024px) { .bin-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12; } }
+        @media (min-width: 1400px) { .bin-grid { grid-template-columns: repeat(5, minmax(0, 1fr)); } }
+      `}</style>
     </div>
   );
 }
