@@ -39,10 +39,72 @@
   --rule-strong: var(--line-strong);
   /* Legacy dashboard surfaces (pre-redesign pages use --bg*; mapped to
      the light theme so they render coherently until rewritten) */
-  --bg: var(--paper);
+  /* --bg is deliberately a step dimmer than --paper: app surfaces sit on
+     warm #f6f0e5 while marketing pages keep bright --paper. */
+  --bg: #f6f0e5;
   --bg-1: var(--cream);
   --bg-2: #ffffff;
   --bg-3: var(--sand);
+
+  --shadow-card: 0 1px 2px rgba(34, 24, 19, 0.05), 0 4px 16px rgba(34, 24, 19, 0.06);
+  --shadow-float: 0 8px 28px rgba(34, 24, 19, 0.16);
+}
+
+/* ── Dashboard back link: icon and label share one centered baseline ── */
+.db-backlink {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-body, sans-serif);
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--ink-2);
+  line-height: 1;
+  text-decoration: none;
+}
+.db-backlink svg {
+  flex-shrink: 0;
+  display: block;
+}
+.db-backlink:hover {
+  color: var(--ink);
+}
+
+/* ── Coral eyebrow label (shared by dashboard pages) ── */
+.label-coral {
+  font-family: var(--font-mono, monospace);
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--coral);
+  font-weight: 600;
+}
+
+/* ── Calm grid swap (opacity-only, no slide/scale): used when dashboard
+   filters or tabs change so there is no pulse or distortion ── */
+.event-grid-calm {
+  animation: fade-in 0.18s ease both;
+}
+
+/* ── Event card hover lift (CSS only, no motion lib) ── */
+.event-card {
+  transition:
+    border-color 0.15s ease,
+    transform 0.15s ease;
+}
+.event-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--rule-strong);
+}
+@media (prefers-reduced-motion: reduce) {
+  .event-grid-calm,
+  .event-card {
+    animation: none;
+    transition: none;
+  }
+  .event-card:hover {
+    transform: none;
+  }
 }
 
 *,

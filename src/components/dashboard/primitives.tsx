@@ -28,7 +28,11 @@ export function PageHeader({
     >
       <div style={{ maxWidth: 880, margin: "0 auto" }}>
         {backHref && (
-          <Link href={backHref} className="db-backlink" style={{ marginBottom: 20, display: "inline-flex" }}>
+          <Link
+            href={backHref}
+            className="db-backlink"
+            style={{ marginBottom: 20, display: "inline-flex", alignItems: "center", gap: 8, lineHeight: 1 }}
+          >
             <ArrowLeft size={15} strokeWidth={2} aria-hidden="true" />
             {backLabel ?? "Back"}
           </Link>
