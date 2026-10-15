@@ -24,7 +24,7 @@ export default function MediaGrid({
   showFlag: boolean;
 }) {
   return (
-    <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))", gap: 14 }}>
+    <div className="gallery-wall">
       {items.map((card, i) => (
         <motion.div
           key={card.id}
@@ -69,7 +69,7 @@ export default function MediaGrid({
                 src={mediaApi.proxyUrl(card.urls.thumbnail)}
                 alt={card.filename}
                 fill
-                sizes="(max-width: 640px) 50vw, 260px"
+                sizes="(max-width: 1024px) 33vw, 280px"
                 unoptimized
                 style={{ objectFit: "cover" }}
               />
@@ -180,6 +180,8 @@ export default function MediaGrid({
         </motion.div>
       ))}
       <style>{`
+        .gallery-wall { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+        @media (min-width: 1024px) { .gallery-wall { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; } }
         .media-tile .tile-media { transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1); }
         .media-tile:hover .tile-media { transform: scale(1.05); }
         @media (prefers-reduced-motion: reduce) {

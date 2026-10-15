@@ -184,7 +184,7 @@ export default function EventGalleryPage() {
               whiteSpace: "nowrap",
             }}
           >
-            {totalAll > 0 ? `${totalAll} ${totalAll === 1 ? "PHOTO" : "PHOTOS"}` : "GALLERY"}
+            {headerDate(eventInfo?.event_date ?? null)?.toUpperCase() ?? "GALLERY"}
           </span>
         </div>
       </div>
@@ -273,32 +273,19 @@ export default function EventGalleryPage() {
                 {eventInfo.description}
               </p>
             )}
-            <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
-              {[
-                `${counts?.total ?? totalAll} photos`,
-                `${counts?.images ?? 0} images`,
-                `${counts?.videos ?? 0} videos`,
-              ].map((stat) => (
-                <span
-                  key={stat}
-                  style={{
-                    fontFamily: "var(--font-mono)",
-                    fontSize: "0.68rem",
-                    fontWeight: 600,
-                    letterSpacing: "0.1em",
-                    textTransform: "uppercase",
-                    padding: "6px 12px",
-                    borderRadius: 99,
-                    background: coverUrl ? "rgba(255,255,255,0.14)" : "var(--accent-soft)",
-                    color: coverUrl ? "#fff" : "var(--accent-ink)",
-                    border: coverUrl ? "1px solid rgba(255,255,255,0.25)" : "1px solid transparent",
-                    backdropFilter: coverUrl ? "blur(6px)" : undefined,
-                  }}
-                >
-                  {stat}
-                </span>
-              ))}
-            </div>
+            <p
+              style={{
+                fontFamily: "var(--font-mono)",
+                fontSize: "0.78rem",
+                fontWeight: 600,
+                letterSpacing: "0.1em",
+                color: coverUrl ? "rgba(255,244,234,0.9)" : "var(--accent-ink)",
+                marginBottom: 0,
+              }}
+            >
+              {counts?.total ?? totalAll} {(counts?.total ?? totalAll) === 1 ? "photo" : "photos"}
+              {(counts?.videos ?? 0) > 0 ? ` · ${counts?.videos} ${counts?.videos === 1 ? "video" : "videos"}` : ""}
+            </p>
           </motion.div>
         </div>
       </div>
@@ -369,42 +356,7 @@ export default function EventGalleryPage() {
       </div>
 
       {/* Content */}
-      <div style={{ maxWidth: 1200, margin: "0 auto", padding: "32px clamp(20px, 5vw, 60px) 72px" }}>
-        <div
-          style={{
-            display: "flex",
-            alignItems: "baseline",
-            gap: 12,
-            marginBottom: 20,
-            flexWrap: "wrap",
-          }}
-        >
-          <h2
-            style={{
-              fontFamily: "var(--font-display)",
-              fontSize: "1.4rem",
-              fontWeight: 700,
-              letterSpacing: "-0.01em",
-              color: "var(--ink)",
-            }}
-          >
-            {mine ? "Your photos" : tab === "photos" ? "Photos" : tab === "videos" ? "Videos" : "The gallery"}
-          </h2>
-          {items.length > 0 && (
-            <span
-              style={{
-                fontFamily: "var(--font-mono)",
-                fontSize: "0.7rem",
-                fontWeight: 600,
-                letterSpacing: "0.12em",
-                color: "var(--ink-3)",
-              }}
-            >
-              {items.length} SHOWN
-              {galleryQuery.hasNextPage ? " · MORE BELOW" : ""}
-            </span>
-          )}
-        </div>
+      <div style={{ maxWidth: 1200, margin: "0 auto", padding: "28px clamp(20px, 5vw, 60px) 72px" }}>
         <AnimatePresence mode="wait">
           {galleryQuery.isLoading ? (
             <motion.div
