@@ -115,6 +115,7 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
 
       {/* Right — form */}
       <div
+        className="auth-form"
         style={{
           flex: 1,
           minHeight: "100dvh",
@@ -151,6 +152,8 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
         @media (max-width: 900px) {
           .auth-side { display: none !important; }
           .auth-mobile { display: block !important; }
+          /* Clear the floating mobile logo so fields never choke it. */
+          .auth-form { justify-content: flex-start !important; padding-top: 110px !important; }
         }
       `}</style>
     </div>
