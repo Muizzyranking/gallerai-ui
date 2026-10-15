@@ -42,7 +42,7 @@ export default function Hero() {
         </Fade>
 
         <Fade delay={120}>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 24, alignItems: "start" }}>
+          <div className="hero-side" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 24, alignItems: "start" }}>
             <div style={{ display: "flex", flexDirection: "column", gap: 24, minWidth: 0 }}>
               <FaceScanDemo />
               <div className="card" style={{ padding: "18px 20px", background: "#fff" }}>
@@ -139,6 +139,9 @@ export default function Hero() {
         }
         @media (max-width: 960px) {
           #hero-grid { grid-template-columns: 1fr !important; }
+        }
+        @media (max-width: 560px) {
+          .hero-side { grid-template-columns: 1fr !important; gap: 16px !important; }
         }
       `}</style>
     </section>

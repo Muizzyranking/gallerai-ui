@@ -126,7 +126,9 @@ body {
   font-size: 16.5px;
   line-height: 1.65;
   -webkit-font-smoothing: antialiased;
-  overflow-x: hidden;
+  /* clip (not hidden): kills sideways scroll without breaking
+     position:sticky descendants */
+  overflow-x: clip;
 }
 
 a {

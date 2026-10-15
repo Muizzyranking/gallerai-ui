@@ -20,11 +20,10 @@ function MarqueeRow({
             {images.map((img) => (
               <figure
                 key={`${g}-${img.caption}`}
-                className="card"
+                className="card marquee-card"
                 style={{
                   overflow: "hidden",
                   margin: 0,
-                  width: 280,
                   flexShrink: 0,
                   position: "relative",
                   border: "none",
@@ -41,6 +40,7 @@ function MarqueeRow({
                   />
                 </div>
                 <figcaption
+                  className="marquee-caption"
                   style={{
                     position: "absolute",
                     inset: 0,
@@ -52,7 +52,6 @@ function MarqueeRow({
                     background: "rgba(24,14,10,0.42)",
                     color: "#fffaf3",
                     fontFamily: "var(--font-display)",
-                    fontSize: "1.45rem",
                     fontWeight: 800,
                     letterSpacing: "-0.01em",
                     lineHeight: 1.2,
@@ -97,6 +96,12 @@ export default function GalleryStrip() {
 
       <style>{`
         .marquee-viewport { overflow: hidden; width: 100%; }
+        .marquee-card { width: 280px; }
+        .marquee-caption { font-size: 1.45rem; }
+        @media (max-width: 640px) {
+          .marquee-card { width: 180px; }
+          .marquee-caption { font-size: 1.05rem; }
+        }
         .marquee-track {
           display: flex;
           width: max-content;
