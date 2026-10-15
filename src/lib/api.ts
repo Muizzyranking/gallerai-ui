@@ -435,6 +435,15 @@ export const events = {
   listMembers: (id: string) => get<MemberInfo[]>(`/api/v1/events/${id}/members`),
 
   removeMember: (id: string, user_id: string) => del<void>(`/api/v1/events/${id}/members/${user_id}`),
+
+  /** Organiser media list — excludes bin + pending-approval. No access code needed. */
+  organizerMedia: (id: string, params?: ListParams) =>
+    requestPage<MediaCard>(
+      `/api/v1/events/${id}/media${qs({ type: params?.type ?? "all", page: params?.page ?? 1, page_size: params?.page_size ?? 50 })}`,
+    ),
+
+  /** Organiser tab counts for one event. */
+  organizerCounts: (id: string) => get<MediaCounts>(`/api/v1/events/${id}/media/counts`),
 };
 
 /* ══════════════════════════════════════════════════════════════

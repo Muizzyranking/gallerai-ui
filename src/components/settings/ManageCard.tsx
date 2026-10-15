@@ -3,7 +3,7 @@
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 import { SectionCard } from "@/components/dashboard/primitives";
-import { ClockIcon, FlagIcon, TrashIcon } from "@/components/icons";
+import { ClockIcon, FlagIcon, ImageIcon, TrashIcon } from "@/components/icons";
 import { gallery as galleryApi, media as mediaApi } from "@/lib/api";
 
 /** Quick links to approvals / bin / flags with live count badges. */
@@ -26,6 +26,12 @@ export default function ManageCard({ eventId }: { eventId: string }) {
 
   const items = [
     {
+      label: "Media library",
+      href: `/events/${eventId}/media`,
+      count: undefined,
+      icon: <ImageIcon size={18} />,
+    },
+    {
       label: "Approvals",
       href: `/events/${eventId}/approvals`,
       count: approvals?.meta.total,
@@ -36,7 +42,10 @@ export default function ManageCard({ eventId }: { eventId: string }) {
   ];
 
   return (
-    <SectionCard title="Manage" desc="Review uploads, recover deletes, and read attendee reports.">
+    <SectionCard
+      title="Manage"
+      desc="Browse the media library, review uploads, recover deletes, and read attendee reports."
+    >
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))", gap: 10 }}>
         {items.map((item) => (
           <Link
