@@ -3,10 +3,14 @@
 import Link from "next/link";
 import { useState } from "react";
 import { nav } from "@/content/site";
+import { useAuth } from "@/hooks/useAuth";
 import Brand from "./Brand";
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
+  const { user, isReady, isAuthed } = useAuth();
+
+  const firstName = user?.display_name?.split(" ")[0];
 
   return (
     <header
@@ -45,15 +49,33 @@ export default function Navbar() {
         </nav>
 
         <div style={{ display: "flex", alignItems: "center", gap: 12 }} className="nav-desktop">
-          <Link
-            href="/login"
-            style={{ fontSize: "0.95rem", fontWeight: 600, color: "var(--ink-2)", padding: "10px 12px" }}
-          >
-            Sign in
-          </Link>
-          <Link href="/register" className="btn-primary" style={{ padding: "11px 20px", fontSize: "0.9rem" }}>
-            Create event
-          </Link>
+          {!isReady ? (
+            <span style={{ width: 180, height: 42 }} aria-hidden="true" />
+          ) : isAuthed ? (
+            <>
+              <Link
+                href="/dashboard"
+                style={{ fontSize: "0.95rem", fontWeight: 600, color: "var(--ink-2)", padding: "10px 12px" }}
+              >
+                {firstName ? `${firstName}'s events` : "Dashboard"}
+              </Link>
+              <Link href="/events/create" className="btn-primary" style={{ padding: "11px 20px", fontSize: "0.9rem" }}>
+                New event
+              </Link>
+            </>
+          ) : (
+            <>
+              <Link
+                href="/login"
+                style={{ fontSize: "0.95rem", fontWeight: 600, color: "var(--ink-2)", padding: "10px 12px" }}
+              >
+                Sign in
+              </Link>
+              <Link href="/register" className="btn-primary" style={{ padding: "11px 20px", fontSize: "0.9rem" }}>
+                Create event
+              </Link>
+            </>
+          )}
         </div>
 
         <div style={{ marginLeft: "auto", display: "flex", alignItems: "center" }} className="nav-mobile">
@@ -122,12 +144,30 @@ export default function Navbar() {
               </Link>
             ))}
             <div style={{ display: "flex", gap: 10, paddingTop: 16 }}>
-              <Link href="/login" onClick={() => setOpen(false)} className="btn-secondary" style={{ flex: 1 }}>
-                Sign in
-              </Link>
-              <Link href="/register" onClick={() => setOpen(false)} className="btn-primary" style={{ flex: 1 }}>
-                Create event
-              </Link>
+              {isAuthed ? (
+                <>
+                  <Link href="/dashboard" onClick={() => setOpen(false)} className="btn-secondary" style={{ flex: 1 }}>
+                    Dashboard
+                  </Link>
+                  <Link
+                    href="/events/create"
+                    onClick={() => setOpen(false)}
+                    className="btn-primary"
+                    style={{ flex: 1 }}
+                  >
+                    New event
+                  </Link>
+                </>
+              ) : (
+                <>
+                  <Link href="/login" onClick={() => setOpen(false)} className="btn-secondary" style={{ flex: 1 }}>
+                    Sign in
+                  </Link>
+                  <Link href="/register" onClick={() => setOpen(false)} className="btn-primary" style={{ flex: 1 }}>
+                    Create event
+                  </Link>
+                </>
+              )}
             </div>
           </div>
         </div>
