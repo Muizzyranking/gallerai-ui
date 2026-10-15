@@ -36,6 +36,7 @@ export default function Button({
       ...baseStyle,
       background: "var(--coral)",
       color: "#fff",
+      border: "1px solid transparent",
     },
     secondary: {
       ...baseStyle,
@@ -47,6 +48,9 @@ export default function Button({
       ...baseStyle,
       background: "transparent",
       color: "var(--ink-2)",
+      // Transparent border keeps the same box as secondary so toggling
+      // variants (e.g. dashboard filters) never shifts layout by 1px.
+      border: "1px solid transparent",
     },
     danger: {
       ...baseStyle,

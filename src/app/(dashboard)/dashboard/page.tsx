@@ -154,7 +154,11 @@ export default function DashboardPage() {
                 No {filter} events.
               </p>
             ) : (
-              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: 16 }}>
+              <div
+                key={filter}
+                className="event-grid-calm"
+                style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: 16 }}
+              >
                 {visible.map((e) => (
                   <EventCard key={e.id} event={e} onDelete={setDelId} />
                 ))}
