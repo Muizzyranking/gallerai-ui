@@ -22,7 +22,7 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
         className="auth-side"
       >
         <Image
-          src="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?q=80&w=1200&auto=format&fit=crop"
+          src="/images/concert-festival.jpg"
           alt="Guests celebrating with sparklers at an evening event"
           fill
           sizes="46vw"
