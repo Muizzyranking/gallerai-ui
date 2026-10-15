@@ -8,7 +8,7 @@ import { useState } from "react";
 import { Field, PageHeader, Toggle } from "@/components/dashboard/primitives";
 import Button from "@/components/ui/custom-button";
 import { DatePicker, TimePicker } from "@/components/ui/DatePicker";
-import { type AccessMode, ApiError, type CreateEventPayload, events as eventsApi } from "@/lib/api";
+import { type AccessMode, ApiError, type CreateEventPayload, events as eventsApi, pickFieldError } from "@/lib/api";
 
 export default function CreateEventPage() {
   const router = useRouter();
@@ -38,7 +38,8 @@ export default function CreateEventPage() {
     onError: (err) => {
       if (err instanceof ApiError && err.hasFieldErrors) {
         setFieldErrors(err.fieldErrors);
-        setApiError("");
+        // Keep the server message as a summary so the form is never silent.
+        setApiError(err.message);
       } else {
         setFieldErrors({});
         setApiError(err instanceof ApiError ? err.message : "Something went wrong.");
@@ -46,11 +47,33 @@ export default function CreateEventPage() {
     },
   });
 
+  const titleError = pickFieldError(fieldErrors, "title");
+  const descriptionError = pickFieldError(fieldErrors, "description");
+  const dateError = pickFieldError(fieldErrors, "event_date", "date");
+  const accessCodeError = pickFieldError(fieldErrors, "access_code", "code");
+  const unmappedErrors = Object.entries(fieldErrors).filter(
+    ([k, v]) =>
+      v &&
+      k !== "title" &&
+      k !== "description" &&
+      k !== "event_date" &&
+      k !== "date" &&
+      k !== "access_code" &&
+      k !== "code" &&
+      !k.endsWith(".title") &&
+      !k.endsWith(".description") &&
+      !k.endsWith(".event_date") &&
+      !k.endsWith(".access_code"),
+  );
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setApiError("");
     setFieldErrors({});
-    if (!title.trim()) return;
+    if (!title.trim()) {
+      setFieldErrors({ title: "Event name is required." });
+      return;
+    }
     mutation.mutate({
       title: title.trim(),
       description: description.trim() || undefined,
@@ -98,14 +121,16 @@ export default function CreateEventPage() {
               }}
               placeholder="e.g. Amara & Kofi Wedding 2024"
               className="field-input"
-              aria-invalid={!!fieldErrors.title}
+              aria-invalid={!!titleError}
+              aria-describedby={titleError ? "create-title-error" : undefined}
             />
-            {fieldErrors.title && (
+            {titleError && (
               <p
+                id="create-title-error"
                 role="alert"
                 style={{ fontFamily: "var(--font-body)", fontSize: "0.82rem", color: "var(--coral)", marginTop: 6 }}
               >
-                {fieldErrors.title}
+                {titleError}
               </p>
             )}
           </Field>
@@ -114,16 +139,38 @@ export default function CreateEventPage() {
             <textarea
               rows={3}
               value={description}
-              onChange={(e) => setDesc(e.target.value)}
+              onChange={(e) => {
+                setDesc(e.target.value);
+                setFieldErrors((p) => ({ ...p, description: undefined }));
+              }}
               placeholder="Welcome to our gallery. Find your photos below."
               className="field-input"
               style={{ resize: "vertical", lineHeight: 1.6 }}
+              aria-invalid={!!descriptionError}
+              aria-describedby={descriptionError ? "create-desc-error" : undefined}
             />
+            {descriptionError && (
+              <p
+                id="create-desc-error"
+                role="alert"
+                style={{ fontFamily: "var(--font-body)", fontSize: "0.82rem", color: "var(--coral)", marginTop: 6 }}
+              >
+                {descriptionError}
+              </p>
+            )}
           </Field>
 
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14 }}>
             <Field label="Event date">
               <DatePicker value={date} onChange={setDate} />
+              {dateError && (
+                <p
+                  role="alert"
+                  style={{ fontFamily: "var(--font-body)", fontSize: "0.82rem", color: "var(--coral)", marginTop: 6 }}
+                >
+                  {dateError}
+                </p>
+              )}
             </Field>
             <Field label="Event time" hint="Optional">
               <TimePicker value={time} onChange={setTime} />
@@ -207,13 +254,16 @@ export default function CreateEventPage() {
                     <input
                       type="text"
                       value={accessCode}
-                      onChange={(e) => setAccessCode(e.target.value)}
+                      onChange={(e) => {
+                        setAccessCode(e.target.value);
+                        setFieldErrors((p) => ({ ...p, access_code: undefined }));
+                      }}
                       placeholder="e.g. KOFI2024"
                       className="field-input"
                       style={{ fontFamily: "var(--font-mono)", letterSpacing: "0.1em", textTransform: "uppercase" }}
-                      aria-invalid={!!fieldErrors.access_code}
+                      aria-invalid={!!accessCodeError}
                     />
-                    {fieldErrors.access_code && (
+                    {accessCodeError && (
                       <p
                         role="alert"
                         style={{
@@ -223,7 +273,7 @@ export default function CreateEventPage() {
                           marginTop: 6,
                         }}
                       >
-                        {fieldErrors.access_code}
+                        {accessCodeError}
                       </p>
                     )}
                   </Field>
@@ -339,6 +389,7 @@ export default function CreateEventPage() {
 
           {apiError && (
             <div
+              role="alert"
               style={{
                 padding: "12px 16px",
                 background: "rgba(255,107,107,0.08)",
@@ -351,7 +402,16 @@ export default function CreateEventPage() {
                 color: "var(--coral)",
               }}
             >
-              {apiError}
+              <div style={{ fontWeight: 700, marginBottom: unmappedErrors.length > 0 ? 6 : 0 }}>{apiError}</div>
+              {unmappedErrors.length > 0 && (
+                <ul style={{ margin: 0, paddingLeft: 18, lineHeight: 1.6 }}>
+                  {unmappedErrors.map(([field, msg]) => (
+                    <li key={field}>
+                      <strong style={{ fontFamily: "var(--font-mono)", fontSize: "0.8rem" }}>{field}</strong>: {msg}
+                    </li>
+                  ))}
+                </ul>
+              )}
             </div>
           )}
 

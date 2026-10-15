@@ -278,6 +278,29 @@ export class ApiError extends Error {
   }
 }
 
+/**
+ * Look up a field error by any of its possible backend key shapes.
+ * The backend may report `title`, `body.title`, or nested paths like
+ * `access_config.access_code` — this matches exact keys first, then any
+ * key whose dot-separated suffix equals the requested name.
+ */
+export function pickFieldError(
+  fieldErrors: Record<string, string | undefined>,
+  ...names: string[]
+): string | undefined {
+  for (const name of names) {
+    if (fieldErrors[name]) return fieldErrors[name];
+  }
+  for (const name of names) {
+    for (const [key, msg] of Object.entries(fieldErrors)) {
+      if (!msg) continue;
+      const parts = key.split(".");
+      if (parts[parts.length - 1] === name || key.endsWith(`.${name}`) || key.endsWith(`[${name}]`)) return msg;
+    }
+  }
+  return undefined;
+}
+
 function qs(params: Record<string, string | number | null | undefined>): string {
   const sp = new URLSearchParams();
   for (const [k, v] of Object.entries(params)) {

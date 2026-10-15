@@ -19,7 +19,7 @@ import MemberRoster from "@/components/settings/MemberRoster";
 import ShareCard from "@/components/settings/ShareCard";
 import Button from "@/components/ui/custom-button";
 import { DatePicker, TimePicker } from "@/components/ui/DatePicker";
-import { type AccessMode, ApiError, events as eventsApi, type UpdateEventPayload } from "@/lib/api";
+import { type AccessMode, ApiError, events as eventsApi, pickFieldError, type UpdateEventPayload } from "@/lib/api";
 
 export default function EventSettingsPage() {
   const { id } = useParams<{ id: string }>();
@@ -28,6 +28,8 @@ export default function EventSettingsPage() {
 
   const [toast, setToast] = useState<{ msg: string; type: "success" | "error" } | null>(null);
   const [confirmDel, setConfirmDel] = useState(false);
+  const [apiError, setApiError] = useState("");
+  const [fieldErrors, setFieldErrors] = useState<Partial<Record<string, string>>>({});
 
   const [title, setTitle] = useState("");
   const [description, setDesc] = useState("");
@@ -71,9 +73,21 @@ export default function EventSettingsPage() {
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ["event", id] });
       qc.invalidateQueries({ queryKey: ["events"] });
+      setApiError("");
+      setFieldErrors({});
       notify("Event updated.", "success");
     },
-    onError: (err) => notify(err instanceof ApiError ? err.message : "Update failed.", "error"),
+    onError: (err) => {
+      const msg = err instanceof ApiError ? err.message : "Update failed.";
+      if (err instanceof ApiError && err.hasFieldErrors) {
+        setFieldErrors(err.fieldErrors);
+        setApiError(msg);
+      } else {
+        setFieldErrors({});
+        setApiError(msg);
+      }
+      notify(msg, "error");
+    },
   });
 
   const deleteMutation = useMutation({
@@ -88,9 +102,19 @@ export default function EventSettingsPage() {
   if (isLoading) return <PageSpinner />;
   if (!event) return null;
 
+  const titleError = pickFieldError(fieldErrors, "title");
+  const descriptionError = pickFieldError(fieldErrors, "description");
+  const dateError = pickFieldError(fieldErrors, "event_date", "date");
+  const accessCodeError = pickFieldError(fieldErrors, "access_code", "code");
+
   const handleSave = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!title.trim()) return;
+    setApiError("");
+    setFieldErrors({});
+    if (!title.trim()) {
+      setFieldErrors({ title: "Event name is required." });
+      return;
+    }
     updateMutation.mutate({
       title: title.trim(),
       description: description.trim() || undefined,
@@ -146,22 +170,69 @@ export default function EventSettingsPage() {
                 type="text"
                 required
                 value={title}
-                onChange={(e) => setTitle(e.target.value)}
+                onChange={(e) => {
+                  setTitle(e.target.value);
+                  setFieldErrors((p) => ({ ...p, title: undefined }));
+                }}
                 className="field-input"
+                aria-invalid={!!titleError}
               />
+              {titleError && (
+                <p
+                  role="alert"
+                  style={{
+                    fontFamily: "var(--font-body)",
+                    fontSize: "0.82rem",
+                    color: "var(--coral)",
+                    marginTop: 6,
+                  }}
+                >
+                  {titleError}
+                </p>
+              )}
             </Field>
             <Field label="Description">
               <textarea
                 value={description}
-                onChange={(e) => setDesc(e.target.value)}
+                onChange={(e) => {
+                  setDesc(e.target.value);
+                  setFieldErrors((p) => ({ ...p, description: undefined }));
+                }}
                 rows={3}
                 className="field-input"
                 style={{ resize: "vertical", lineHeight: 1.6 }}
+                aria-invalid={!!descriptionError}
               />
+              {descriptionError && (
+                <p
+                  role="alert"
+                  style={{
+                    fontFamily: "var(--font-body)",
+                    fontSize: "0.82rem",
+                    color: "var(--coral)",
+                    marginTop: 6,
+                  }}
+                >
+                  {descriptionError}
+                </p>
+              )}
             </Field>
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14 }}>
               <Field label="Date">
                 <DatePicker value={date} onChange={setDate} />
+                {dateError && (
+                  <p
+                    role="alert"
+                    style={{
+                      fontFamily: "var(--font-body)",
+                      fontSize: "0.82rem",
+                      color: "var(--coral)",
+                      marginTop: 6,
+                    }}
+                  >
+                    {dateError}
+                  </p>
+                )}
               </Field>
               <Field label="Time" hint="Optional">
                 <TimePicker value={time} onChange={setTime} />
@@ -241,11 +312,28 @@ export default function EventSettingsPage() {
                     <input
                       type="text"
                       value={accessCode}
-                      onChange={(e) => setAccessCode(e.target.value)}
+                      onChange={(e) => {
+                        setAccessCode(e.target.value);
+                        setFieldErrors((p) => ({ ...p, access_code: undefined }));
+                      }}
                       placeholder={event.access_code ?? "e.g. KOFI2024"}
                       className="field-input"
                       style={{ fontFamily: "var(--font-mono)", letterSpacing: "0.1em", textTransform: "uppercase" }}
+                      aria-invalid={!!accessCodeError}
                     />
+                    {accessCodeError && (
+                      <p
+                        role="alert"
+                        style={{
+                          fontFamily: "var(--font-body)",
+                          fontSize: "0.82rem",
+                          color: "var(--coral)",
+                          marginTop: 6,
+                        }}
+                      >
+                        {accessCodeError}
+                      </p>
+                    )}
                   </Field>
                 </div>
               )}
@@ -298,6 +386,25 @@ export default function EventSettingsPage() {
                 {updateMutation.isPending ? "Saving…" : "Save changes"}
               </Button>
             </div>
+
+            {apiError && (
+              <div
+                role="alert"
+                style={{
+                  padding: "12px 16px",
+                  background: "rgba(255,107,107,0.08)",
+                  borderWidth: 1,
+                  borderStyle: "solid",
+                  borderColor: "rgba(255,107,107,0.28)",
+                  borderRadius: 6,
+                  fontFamily: "var(--font-body)",
+                  fontSize: "0.9rem",
+                  color: "var(--coral)",
+                }}
+              >
+                {apiError}
+              </div>
+            )}
           </form>
         </SectionCard>
 
