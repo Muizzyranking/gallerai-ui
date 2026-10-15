@@ -79,6 +79,7 @@ export default function EventCard({ event, onDelete }: { event: Event; onDelete:
     borderStyle: "solid",
     borderColor: "var(--rule-strong)",
     borderRadius: 12,
+    boxShadow: "var(--shadow-card)",
     // NOTE: overflow must stay visible — the kebab dropdown is absolutely
     // positioned inside this card and would be clipped otherwise.
     overflow: "visible",
