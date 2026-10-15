@@ -5,7 +5,7 @@ import Image from "next/image";
 import { CheckIcon, DownloadIcon } from "@/components/icons";
 import { type MediaCard, media as mediaApi } from "@/lib/api";
 
-/** Compact gallery tiles (160px) with hover actions. */
+/** Gallery wall: generous tiles with hover zoom and hover actions. */
 export default function MediaGrid({
   items,
   selectable,
@@ -24,19 +24,22 @@ export default function MediaGrid({
   showFlag: boolean;
 }) {
   return (
-    <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(160px, 1fr))", gap: 10 }}>
+    <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))", gap: 14 }}>
       {items.map((card, i) => (
         <motion.div
           key={card.id}
+          className="media-tile"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: Math.min(i, 10) * 0.03 }}
           style={{
             position: "relative",
             aspectRatio: "1",
-            borderRadius: 12,
+            borderRadius: 14,
             overflow: "hidden",
-            background: "var(--bg-2)",
+            background: "var(--bg-3)",
+            border: "1px solid var(--rule)",
+            boxShadow: "0 1px 2px rgba(34,24,19,0.06), 0 6px 20px rgba(34,24,19,0.08)",
             cursor: selectable ? "pointer" : "default",
             outline: selected.has(card.id) ? "2px solid var(--coral)" : "none",
             outlineOffset: 2,
@@ -56,16 +59,17 @@ export default function MediaGrid({
               src={mediaApi.proxyUrl(card.urls.display)}
               preload="metadata"
               playsInline
+              className="tile-media"
               style={{ width: "100%", height: "100%", objectFit: "cover" }}
               muted
             />
           ) : (
-            <div style={{ position: "relative", width: "100%", height: "100%" }}>
+            <div className="tile-media" style={{ position: "relative", width: "100%", height: "100%" }}>
               <Image
                 src={mediaApi.proxyUrl(card.urls.thumbnail)}
                 alt={card.filename}
                 fill
-                sizes="(max-width: 640px) 50vw, 220px"
+                sizes="(max-width: 640px) 50vw, 260px"
                 unoptimized
                 style={{ objectFit: "cover" }}
               />
@@ -175,6 +179,14 @@ export default function MediaGrid({
           </div>
         </motion.div>
       ))}
+      <style>{`
+        .media-tile .tile-media { transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1); }
+        .media-tile:hover .tile-media { transform: scale(1.05); }
+        @media (prefers-reduced-motion: reduce) {
+          .media-tile .tile-media { transition: none; }
+          .media-tile:hover .tile-media { transform: none; }
+        }
+      `}</style>
     </div>
   );
 }

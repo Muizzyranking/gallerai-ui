@@ -12,6 +12,7 @@ import MediaGrid from "@/components/gallery/MediaGrid";
 import PasscodeGate from "@/components/gallery/PasscodeGate";
 import UploadModal from "@/components/gallery/UploadModal";
 import { DownloadIcon, FaceIcon, UploadIcon } from "@/components/icons";
+import Brand from "@/components/layout/Brand";
 import Button from "@/components/ui/custom-button";
 import { useGalleryAccess } from "@/hooks/useGalleryAccess";
 import {
@@ -153,32 +154,91 @@ export default function EventGalleryPage() {
 
   return (
     <div style={{ minHeight: "100vh", background: "var(--bg)" }}>
+      {/* Slim gallery top bar */}
+      <div
+        style={{
+          borderBottom: "1px solid var(--rule)",
+          background: "color-mix(in srgb, var(--paper) 88%, transparent)",
+          backdropFilter: "blur(10px)",
+        }}
+      >
+        <div
+          style={{
+            maxWidth: 1200,
+            margin: "0 auto",
+            padding: "10px clamp(20px, 5vw, 60px)",
+            display: "flex",
+            alignItems: "center",
+            gap: 12,
+          }}
+        >
+          <Brand size="sm" />
+          <span
+            style={{
+              marginLeft: "auto",
+              fontFamily: "var(--font-mono)",
+              fontSize: "0.68rem",
+              fontWeight: 600,
+              letterSpacing: "0.14em",
+              color: "var(--ink-2)",
+              whiteSpace: "nowrap",
+            }}
+          >
+            {totalAll > 0 ? `${totalAll} ${totalAll === 1 ? "PHOTO" : "PHOTOS"}` : "GALLERY"}
+          </span>
+        </div>
+      </div>
+
       {/* Header */}
       <div
         style={{
           position: "relative",
-          height: coverUrl ? 320 : 200,
-          background: coverUrl
-            ? `linear-gradient(to bottom, rgba(0,0,0,0.3), rgba(0,0,0,0.6)), url(${coverUrl})`
-            : "var(--bg-2)",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
+          minHeight: coverUrl ? 340 : 220,
           display: "flex",
           flexDirection: "column",
           justifyContent: "flex-end",
-          padding: "clamp(20px, 5vw, 60px)",
+          padding: "clamp(28px, 5vw, 60px) clamp(20px, 5vw, 60px)",
+          overflow: "hidden",
+          background: coverUrl ? "#1d130d" : "var(--bg-2)",
+          borderBottom: "1px solid var(--rule)",
         }}
       >
-        <div style={{ maxWidth: 1200, margin: "0 auto", width: "100%" }}>
+        {coverUrl && (
+          <>
+            <img
+              src={coverUrl}
+              alt=""
+              aria-hidden="true"
+              style={{
+                position: "absolute",
+                inset: 0,
+                width: "100%",
+                height: "100%",
+                objectFit: "cover",
+              }}
+            />
+            <div
+              aria-hidden="true"
+              style={{
+                position: "absolute",
+                inset: 0,
+                background:
+                  "linear-gradient(to bottom, rgba(20,12,8,0.25) 0%, rgba(20,12,8,0.35) 45%, rgba(20,12,8,0.82) 100%)",
+              }}
+            />
+          </>
+        )}
+        <div style={{ maxWidth: 1200, margin: "0 auto", width: "100%", position: "relative" }}>
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
             {headerDate(eventInfo?.event_date ?? null) && (
               <div
                 style={{
                   fontFamily: "var(--font-mono)",
-                  fontSize: "0.8rem",
-                  color: coverUrl ? "rgba(255,255,255,0.8)" : "var(--ink-2)",
+                  fontSize: "0.75rem",
+                  fontWeight: 600,
+                  color: coverUrl ? "rgba(255,244,234,0.85)" : "var(--accent-ink)",
                   textTransform: "uppercase",
-                  letterSpacing: "0.1em",
+                  letterSpacing: "0.16em",
                   marginBottom: 12,
                 }}
               >
@@ -188,11 +248,13 @@ export default function EventGalleryPage() {
             <h1
               style={{
                 fontFamily: "var(--font-display)",
-                fontSize: "clamp(2rem, 5vw, 3.5rem)",
-                fontWeight: 600,
+                fontSize: "clamp(2.2rem, 5vw, 3.8rem)",
+                fontWeight: 800,
+                letterSpacing: "-0.02em",
                 color: coverUrl ? "#fff" : "var(--ink)",
                 marginBottom: 12,
-                lineHeight: 1.1,
+                lineHeight: 1.05,
+                textWrap: "balance",
               }}
             >
               {title}
@@ -201,15 +263,42 @@ export default function EventGalleryPage() {
               <p
                 style={{
                   fontFamily: "var(--font-body)",
-                  fontSize: "1.1rem",
-                  color: coverUrl ? "rgba(255,255,255,0.9)" : "var(--ink-2)",
-                  maxWidth: 600,
-                  lineHeight: 1.6,
+                  fontSize: "1.05rem",
+                  color: coverUrl ? "rgba(255,244,234,0.88)" : "var(--ink-2)",
+                  maxWidth: 620,
+                  lineHeight: 1.65,
+                  marginBottom: 16,
                 }}
               >
                 {eventInfo.description}
               </p>
             )}
+            <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+              {[
+                `${counts?.total ?? totalAll} photos`,
+                `${counts?.images ?? 0} images`,
+                `${counts?.videos ?? 0} videos`,
+              ].map((stat) => (
+                <span
+                  key={stat}
+                  style={{
+                    fontFamily: "var(--font-mono)",
+                    fontSize: "0.68rem",
+                    fontWeight: 600,
+                    letterSpacing: "0.1em",
+                    textTransform: "uppercase",
+                    padding: "6px 12px",
+                    borderRadius: 99,
+                    background: coverUrl ? "rgba(255,255,255,0.14)" : "var(--accent-soft)",
+                    color: coverUrl ? "#fff" : "var(--accent-ink)",
+                    border: coverUrl ? "1px solid rgba(255,255,255,0.25)" : "1px solid transparent",
+                    backdropFilter: coverUrl ? "blur(6px)" : undefined,
+                  }}
+                >
+                  {stat}
+                </span>
+              ))}
+            </div>
           </motion.div>
         </div>
       </div>
@@ -280,7 +369,42 @@ export default function EventGalleryPage() {
       </div>
 
       {/* Content */}
-      <div style={{ maxWidth: 1200, margin: "0 auto", padding: "32px clamp(20px, 5vw, 60px) 60px" }}>
+      <div style={{ maxWidth: 1200, margin: "0 auto", padding: "32px clamp(20px, 5vw, 60px) 72px" }}>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "baseline",
+            gap: 12,
+            marginBottom: 20,
+            flexWrap: "wrap",
+          }}
+        >
+          <h2
+            style={{
+              fontFamily: "var(--font-display)",
+              fontSize: "1.4rem",
+              fontWeight: 700,
+              letterSpacing: "-0.01em",
+              color: "var(--ink)",
+            }}
+          >
+            {mine ? "Your photos" : tab === "photos" ? "Photos" : tab === "videos" ? "Videos" : "The gallery"}
+          </h2>
+          {items.length > 0 && (
+            <span
+              style={{
+                fontFamily: "var(--font-mono)",
+                fontSize: "0.7rem",
+                fontWeight: 600,
+                letterSpacing: "0.12em",
+                color: "var(--ink-3)",
+              }}
+            >
+              {items.length} SHOWN
+              {galleryQuery.hasNextPage ? " · MORE BELOW" : ""}
+            </span>
+          )}
+        </div>
         <AnimatePresence mode="wait">
           {galleryQuery.isLoading ? (
             <motion.div
@@ -382,22 +506,34 @@ export default function EventGalleryPage() {
       />
 
       <footer
-        style={{ borderTop: "1px solid var(--rule)", padding: "40px clamp(20px, 5vw, 60px)", textAlign: "center" }}
+        style={{
+          borderTop: "1px solid var(--rule)",
+          background: "var(--paper)",
+          padding: "44px clamp(20px, 5vw, 60px) 48px",
+        }}
       >
-        <p
+        <div
           style={{
-            fontFamily: "var(--font-display)",
-            fontSize: "1rem",
-            fontWeight: 600,
-            color: "var(--ink)",
-            marginBottom: 8,
+            maxWidth: 1200,
+            margin: "0 auto",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            gap: 12,
+            textAlign: "center",
           }}
         >
-          Galler<em style={{ fontStyle: "italic", color: "var(--coral)" }}>AI</em>
-        </p>
-        <p style={{ fontFamily: "var(--font-body)", fontSize: "0.85rem", color: "var(--ink-2)" }}>
-          Powered by AI face recognition
-        </p>
+          <Brand size="sm" />
+          <p style={{ fontFamily: "var(--font-body)", fontSize: "0.85rem", color: "var(--ink-2)" }}>
+            {title} · {totalAll} {totalAll === 1 ? "photo" : "photos"} · Powered by AI face recognition
+          </p>
+          <p style={{ fontFamily: "var(--font-body)", fontSize: "0.8rem", color: "var(--ink-3)" }}>
+            Want a gallery like this for your event?{" "}
+            <a href="/register" style={{ color: "var(--accent-ink)", fontWeight: 600 }}>
+              Create your event
+            </a>
+          </p>
+        </div>
       </footer>
     </div>
   );
