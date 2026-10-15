@@ -94,7 +94,7 @@
 }
 .event-card:hover {
   transform: translateY(-3px);
-  border-color: var(--rule-strong);
+  border-color: var(--ink-4);
 }
 @media (prefers-reduced-motion: reduce) {
   .event-grid-calm,

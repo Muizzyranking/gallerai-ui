@@ -75,9 +75,9 @@ export default function EventCard({ event, onDelete }: { event: Event; onDelete:
 
   const card: React.CSSProperties = {
     background: "var(--bg-1)",
-    borderWidth: 1,
+    borderWidth: 1.5,
     borderStyle: "solid",
-    borderColor: "var(--rule)",
+    borderColor: "var(--rule-strong)",
     borderRadius: 12,
     // NOTE: overflow must stay visible — the kebab dropdown is absolutely
     // positioned inside this card and would be clipped otherwise.
