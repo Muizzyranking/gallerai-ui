@@ -1,5 +1,22 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
+## Environment
+
+Copy these into `.env.local` (see `.gitignore` — env files are never committed):
+
+```bash
+# Backend API base URL (used by server routes; media URLs reuse it client-side)
+NEXT_PUBLIC_API_URL=http://localhost:8000
+# Optional server-only override for server-to-backend calls (Docker, SSR hosts)
+# API_URL=http://backend:8000
+
+# Google Sign-In (Web OAuth client ID from Google Cloud Console).
+# The app origin (e.g. http://localhost:3000) must be an authorized
+# JavaScript origin on that client. If unset, the Google button shows a
+# configuration error and email auth keeps working.
+NEXT_PUBLIC_GOOGLE_CLIENT_ID=
+```
+
 ## Getting Started
 
 First, run the development server:
